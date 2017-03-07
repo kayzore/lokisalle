@@ -1,27 +1,33 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{ app.racineWeb }}{{ getRoute('public.homepage') }}">Lokisalle</a>
+            <a class="navbar-brand" href="{{ getRoute('public.ls_homepage') }}">Lokisalle</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="#">Qui sommes nous</a></li>
-            <li><a href="{{ app.racineWeb }}{{ getRoute('public.contact') }}">
+            <li>
+                <a href="#">
+                    Qui sommes nous
+                </a>
+            </li>
+            <li>
+                <a href="#">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i> Contact
-                </a></li>
+                </a>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if user is defined %}
                 <p class="navbar-text"><i class="fa fa-smile-o" aria-hidden="true"></i> <b>Bonjour {{ user.prenom }} {{ user.nom }}</b></p>
                 {% if user.statut == 1 %}
-                    <li><a href="{{ app.racineWeb }}{{ getRoute('admin.home') }}"><i class="fa fa-lock" aria-hidden="true"></i> Administration</a></li>
+                    <li><a href="#"><i class="fa fa-lock" aria-hidden="true"></i> Administration</a></li>
                 {% endif %}
                 <li>
-                    <a href="{{ app.racineWeb }}{{ getRoute('public.panier') }}">
-                    <span class="badge">
-                        <span id="nbArticleInCart">
-                            {% if panier is defined %}{{ panier|length }}{% else %}0{% endif %}
-                        </span> <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    </span>
+                    <a href="#">
+                        <span class="badge">
+                            <span id="nbArticleInCart">
+                                {% if panier is defined %}{{ panier|length }}{% else %}0{% endif %}
+                            </span> <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </span>
                     </a>
                 </li>
             {% endif %}
@@ -32,11 +38,11 @@
                 </a>
                 <ul class="dropdown-menu">
                     {% if user is defined %}
-                        <li><a href="{{ app.racineWeb }}{{ getRoute('public.profil') }}"><i class="fa fa-user" aria-hidden="true"></i> Profil</a></li>
-                        <li><a href="{{ app.racineWeb }}{{ getRoute('public.deconnexion') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
+                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i> Profil</a></li>
+                        <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
                     {% else %}
-                        <li><a href="{{ app.racineWeb }}{{ getRoute('public.connexion') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> Connexion</a></li>
-                        <li><a href="{{ app.racineWeb }}{{ getRoute('public.inscription') }}">Inscription</a></li>
+                        <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Connexion</a></li>
+                        <li><a href="#">Inscription</a></li>
                     {% endif %}
                 </ul>
             </li>
