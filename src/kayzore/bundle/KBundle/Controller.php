@@ -89,4 +89,20 @@ class Controller
         }
         return $path;
     }
+
+    /**
+     * Effectue une redirection
+     * @param $path string Alias d'une route
+     */
+    public function redirect($path) {
+        header('location: ' . $_SESSION['ls_viewVar']['racineWeb'] . $this->getUrl($path));
+    }
+
+    /**
+     * Check si la requête HTTP est une requête ajax
+     * @return bool
+     */
+    public function isXmlHttpRequest() {
+        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) ? true : false);
+    }
 }
