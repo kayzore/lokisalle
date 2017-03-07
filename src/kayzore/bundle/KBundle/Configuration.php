@@ -27,7 +27,9 @@ class Configuration extends RouterController
         $config = Yaml::parse(file_get_contents(kFramework::getPathConfig() . 'parameters.yml'));
         kFramework::setProjectName($config['parameter']['project_name']);
         kFramework::setProjectAlias($config['parameter']['project_alias']);
-        kFramework::setProjectSubFolder($config['parameter']['project_sub_folder']);
+        $sub_folder = $config['parameter']['project_sub_folder'];
+        kFramework::setProjectSubFolder($sub_folder);
+        $_SESSION[kFramework::getProjectAlias() . '_viewVar']['racineWeb'] = '/' . $sub_folder . '/'; // A MINIMA '/'
 
         // PARENT
         parent::__construct();
