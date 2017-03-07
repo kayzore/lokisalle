@@ -14,6 +14,16 @@ class CoreController extends Controller
         ));
     }
 
+    public function connexionAction()
+    {
+        // Connexion
+    }
+
+    public function executeConnexionAction()
+    {
+        // Execute Connexion
+    }
+
     public function deconnexionAction()
     {
         Membre::deconnexion();
