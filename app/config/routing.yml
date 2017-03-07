@@ -3,3 +3,21 @@ public.ls_homepage:
     type: get
     controller: 'CoreController'
     methode: 'home'
+
+public.ls_connexion:
+    route: '/connexion'
+    type: get
+    controller: 'CoreController'
+    methode: 'connexion'
+
+public.ls_execute_connexion:
+    route: '/connexion'
+    type: post
+    controller: 'CoreController'
+    methode: 'executeConnexion'
+
+public.ls_deconnexion:
+    route: '/deconnexion'
+    type: get
+    controller: 'CoreController'
+    methode: 'deconnexion'
