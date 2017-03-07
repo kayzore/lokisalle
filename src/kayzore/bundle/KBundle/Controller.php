@@ -22,6 +22,10 @@ class Controller
             'cache' => (DEV_MODE == true ? false : '../twigCache/'),
             'debug' => DEV_MODE
         ));
+        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/extension.php';
+        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/global.php';
+        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/filter.php';
+        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/function.php';
 
         $root = \kayzore\bundle\KBundle\kFramework::getRacineWeb() . 'src/';
         $this->searchAndInclude('extension.php', $root);
