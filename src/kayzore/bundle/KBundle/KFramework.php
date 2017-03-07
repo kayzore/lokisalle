@@ -11,6 +11,8 @@ abstract class KFramework
     protected static $pathConfig;
     protected static $racine_web;
     protected static $dir_bundle;
+    protected static $project_name;
+    protected static $project_alias;
 
     /**
      * @return string
@@ -58,5 +60,37 @@ abstract class KFramework
     public static function setPathConfig($pathConfig)
     {
         self::$pathConfig = $pathConfig;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getProjectName()
+    {
+        return self::$project_name;
+    }
+
+    /**
+     * @param mixed $project_name
+     */
+    public static function setProjectName($project_name)
+    {
+        self::$project_name = $project_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getProjectAlias()
+    {
+        return self::$project_alias;
+    }
+
+    /**
+     * @param mixed $project_alias
+     */
+    public static function setProjectAlias($project_alias)
+    {
+        self::$project_alias = $project_alias;
     }
 }

@@ -2,6 +2,7 @@
 namespace kayzore\bundle\KBundle;
 
 use kayzore\bundle\RouterBundle\RouterController;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Initialisation du Framework
@@ -12,6 +13,7 @@ class Configuration extends RouterController
 {
     public function __construct()
     {
+
         kFramework::setRacineWeb(str_replace('\\', '/', RACINE_WEB)); // C:\wamp64\www\jl\KFramework\
 
         if (is_dir('../src/kayzore/bundle/KBundle/')) {
@@ -22,6 +24,9 @@ class Configuration extends RouterController
 
         // PROJECT INFORMATIONS
         kFramework::setPathConfig(kFramework::getRacineWeb() . 'app/config/');
+        $config = Yaml::parse(file_get_contents(kFramework::getPathConfig() . 'parameters.yml'));
+        kFramework::setProjectName($config['parameter']['project_name']);
+        kFramework::setProjectAlias($config['parameter']['project_alias']);
 
         // PARENT
         parent::__construct();

@@ -1,5 +1,6 @@
 parameter:
-    project_name: ''
+    project_name: 'Lokisalle'
+    project_alias: 'ls'
     db_host: 'localhost'
     db_name: ''
     db_user: ''
