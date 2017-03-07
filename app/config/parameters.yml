@@ -1,6 +1,7 @@
 parameter:
     project_name: 'Lokisalle'
     project_alias: 'ls'
+    project_sub_folder: 'jl/lokisalle-poo'
     db_host: 'localhost'
     db_name: ''
     db_user: ''

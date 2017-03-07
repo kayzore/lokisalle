@@ -27,6 +27,7 @@ class Configuration extends RouterController
         $config = Yaml::parse(file_get_contents(kFramework::getPathConfig() . 'parameters.yml'));
         kFramework::setProjectName($config['parameter']['project_name']);
         kFramework::setProjectAlias($config['parameter']['project_alias']);
+        kFramework::setProjectSubFolder($config['parameter']['project_sub_folder']);
 
         // PARENT
         parent::__construct();

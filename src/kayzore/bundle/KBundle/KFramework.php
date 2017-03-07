@@ -13,6 +13,7 @@ abstract class KFramework
     protected static $dir_bundle;
     protected static $project_name;
     protected static $project_alias;
+    protected static $project_sub_folder;
 
     /**
      * @return string
@@ -92,5 +93,21 @@ abstract class KFramework
     public static function setProjectAlias($project_alias)
     {
         self::$project_alias = $project_alias;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getProjectSubFolder()
+    {
+        return self::$project_sub_folder;
+    }
+
+    /**
+     * @param mixed $project_sub_folder
+     */
+    public static function setProjectSubFolder($project_sub_folder)
+    {
+        self::$project_sub_folder = $project_sub_folder;
     }
 }
