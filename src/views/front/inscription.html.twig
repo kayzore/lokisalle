@@ -1,54 +1,51 @@
 {% extends 'layout.html.twig' %}
 
-{% import "includes/macros/forms.html.twig" as form %}
-
 {% block title %}
     Inscription -
 {% endblock title %}
 
 {% block bodyContent %}
     <div class="row">
-        <div class="col-md-5 col-md-offset-4">
-            <h2 class="text-center">S'inscrire</h2>
-            {% if errors is not empty %}
-                <div class="alert alert-danger text-center">
-                    <strong>Le formulaire contient des erreurs</strong>
+        <div class="col-md-8 col-md-offset-2">
+            <h2 class="text-center">Inscription</h2>
+            <form method="post" class="form-horizontal well">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input id="pseudoInput" name="pseudoInput" placeholder="Votre pseudo" class="form-control" type="text" value="">
+                    </div>
+
+                    <div class="col-md-6">
+                        <input id="passwordInput" name="passwordInput" placeholder="Votre mot de passe" class="form-control" type="password" value="">
+                    </div>
                 </div>
-            {% elseif successRegister == true %}
-                <div class="alert alert-success text-center">
-                    <strong>Inscription réussie : votre compte est créé</strong>
-                    <br>
-                    Connectez-vous en <a href="{{ getRoute('public.connexion') }}">cliquant ici</a>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input id="nomInput" name="nomInput" placeholder="Votre nom" class="form-control" type="text" value="">
+                    </div>
+
+                    <div class="col-md-6">
+                        <input id="prenomInput" name="prenomInput" placeholder="Votre prénom" class="form-control" type="text" value="">
+                    </div>
                 </div>
-            {% endif %}
-            {% if successRegister == false %}
-                <form method="post" class="form-horizontal">
-                    <div class="form-group {{ form.getErrorClass(errors, 'pseudoInput') }}">
-                        {{ form.input('Votre Pseudo', 'pseudo', 'text', 'md-5', 'md-7', 'Votre Pseudo', formContent.pseudoInput, errors, 'pseudoInput') }}
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input id="emailInput" name="emailInput" placeholder="Votre email" class="form-control" type="email" value="">
                     </div>
-                    <div class="form-group {{ form.getErrorClass(errors, 'passwordInput') }}">
-                        {{ form.input('Votre Mot de passe', 'password', 'password', 'md-5', 'md-7', 'Votre mot de passe', formContent.passwordInput, errors, 'passwordInput') }}
+
+                    <div class="col-md-6">
+                        <select id="civiliteSelect" name="civiliteSelect" class="form-control">
+                            <option value="0" selected="selected">Homme</option>
+                            <option value="1">Femme</option>
+                        </select>
                     </div>
-                    <div class="form-group {{ form.getErrorClass(errors, 'nomInput') }}">
-                        {{ form.input('Votre nom', 'nom', 'text', 'md-5', 'md-7', 'Votre nom', formContent.nomInput, errors, 'nomInput') }}
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <button class="btn btn-success btn-block" type="submit">Inscription</button>
+                        <a href="{{ getRoute('public.connexion') }}" class="btn btn-primary btn-xs btn-block">Connexion</a>
                     </div>
-                    <div class="form-group {{ form.getErrorClass(errors, 'prenomInput') }}">
-                        {{ form.input('Votre prénom', 'prenom', 'text', 'md-5', 'md-7', 'Votre prénom', formContent.prenomInput, errors, 'prenomInput') }}
-                    </div>
-                    <div class="form-group {{ form.getErrorClass(errors, 'emailInput') }}">
-                        {{ form.input('Votre email', 'email', 'email', 'md-5', 'md-7', 'Votre email', formContent.emailInput, errors, 'emailInput') }}
-                    </div>
-                    <div class="form-group {{ form.getErrorClass(errors, 'civiliteSelect') }}">
-                        {{ form.select('Civilite', 'civilite', ['Homme', 'Femme'], 'md-5', 'md-7', formContent.civiliteSelect, errors, 'civiliteSelect') }}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <button class="btn btn-success btn-block" type="submit">Inscription</button>
-                            <a href="{{ getRoute('public.connexion') }}" class="btn btn-primary btn-xs btn-block">Connexion</a>
-                        </div>
-                    </div>
-                </form>
-            {% endif %}
+                </div>
+            </form>
         </div>
     </div>
 {% endblock bodyContent %}

@@ -4,6 +4,18 @@ public.ls_homepage:
     controller: 'CoreController'
     methode: 'home'
 
+public.ls_inscription:
+    route: '/inscription'
+    type: get
+    controller: 'CoreController'
+    methode: 'inscription'
+
+public.ls_execute_inscription:
+    route: '/inscription'
+    type: post
+    controller: 'CoreController'
+    methode: 'executeInscription'
+
 public.ls_connexion:
     route: '/connexion'
     type: get

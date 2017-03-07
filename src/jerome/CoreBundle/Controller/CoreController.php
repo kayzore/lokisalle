@@ -14,6 +14,18 @@ class CoreController extends Controller
         ));
     }
 
+    public function inscriptionAction()
+    {
+        // Inscription
+        echo $this->twig->render('front/inscription.html.twig', array(
+        ));
+    }
+
+    public function executeInscriptionAction()
+    {
+        // Execute Inscription
+    }
+
     public function connexionAction()
     {
         // Connexion
