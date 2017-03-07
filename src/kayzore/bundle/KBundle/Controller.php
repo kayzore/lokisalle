@@ -96,6 +96,7 @@ class Controller
      */
     public function redirect($path) {
         header('location: ' . $_SESSION[kFramework::getProjectAlias() . '_viewVar']['racineWeb'] . $this->getUrl($path));
+        die;
     }
 
     /**
