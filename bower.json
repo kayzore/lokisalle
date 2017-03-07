@@ -1,0 +1,15 @@
+{
+  "name": "lokisalle",
+  "homepage": "https://github.com/kayzore/lokisalle",
+  "authors": [
+    "jerome-lelievre <jerome.lelievre9@gmail.com>"
+  ],
+  "description": "TP lokisalle ifocop",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "bootstrap": "https://github.com/twbs/bootstrap.git#^3.3.7"
+  }
+}
