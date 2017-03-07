@@ -5,12 +5,8 @@ namespace kayzore\bundle\KBundle;
 use kayzore\bundle\RouterBundle\ServiceException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use kayzore\bundle\KBundle\KFramework;
 use Twig_Environment;
-use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
 
 class Controller
 {
@@ -23,10 +19,10 @@ class Controller
             'cache' => (DEV_MODE == true ? false : '../twigCache/'),
             'debug' => DEV_MODE
         ));
-        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/extension.php';
-        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/global.php';
-        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/filter.php';
-        include_once kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/function.php';
+        include kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/kf_extension.php';
+        include kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/kf_global.php';
+        include kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/kf_filter.php';
+        include kFramework::getDirBundle() . 'kayzore/bundle/TwigExtension/kf_function.php';
 
         $root = \kayzore\bundle\KBundle\kFramework::getRacineWeb() . 'src/';
         $this->searchAndInclude('extension.php', $root);
