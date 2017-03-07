@@ -1,0 +1,36 @@
+.is_hidden {
+    display: none;
+}
+.full-width {
+    width: 100%;
+}
+#map {
+    width: 100%;
+    min-height: 250px;
+}
+body {
+    padding-top: 80px;
+    padding-bottom: 50px;
+}
+.loader {
+    display: none;
+}
+.vert-align-middle {
+    vertical-align:middle;
+}
+.imgSalleAdmin {
+    max-height: 150px;
+    max-width: 108px;
+}
+.thumbnail {
+    height: 421px;
+}
+.thumbnail img {
+    height: 184px;
+}
+.stars {
+    color: #FC5F5F;
+}
+.navbar-brand {
+    padding-top:10px;
+}
