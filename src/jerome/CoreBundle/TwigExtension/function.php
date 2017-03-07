@@ -33,9 +33,3 @@ $get_moyenne = new Twig_SimpleFunction('getMoyenne', function (array $notes) {
     return 0;
 });
 $this->twig->addFunction($get_moyenne);
-
-$get_route = new Twig_SimpleFunction('getRoute', function ($name, array $options = []) {
-    //return $this->routerController->utilityController->getUrl($name, $options);
-    return '#';
-});
-$this->twig->addFunction($get_route);

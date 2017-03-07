@@ -8,16 +8,44 @@ use kayzore\bundle\KBundle\Membre as MembreInterface;
 
 class Membre implements MembreInterface
 {
+    /**
+     * @var int $id
+     */
     private $id;
+    /**
+     * @var string $pseudo
+     */
     private $pseudo;
+    /**
+     * @var string $password
+     */
     private $password;
+    /**
+     * @var string $nom
+     */
     private $nom;
+    /**
+     * @var string $prenom
+     */
     private $prenom;
+    /**
+     * @var string $email
+     */
     private $email;
+    /**
+     * @var string $civilite
+     */
     private $civilite;
+    /**
+     * @var int $statut
+     */
     private $statut;
 
-    public function __construct(array $membre)
+    /**
+     * Membre constructor.
+     * @param array|null $membre
+     */
+    public function __construct(array $membre = null)
     {
         $this->setId($membre['id']);
         $this->setPseudo($membre['pseudo']);
@@ -25,6 +53,7 @@ class Membre implements MembreInterface
         $this->setPrenom($membre['prenom']);
         $this->setEmail($membre['email']);
         $this->setCivilite($membre['civilite']);
+        $this->setId($membre['id']);
         $this->setStatut($membre['statut']);
     }
 
@@ -178,6 +207,120 @@ class Membre implements MembreInterface
         $this->statut = $statut;
 
         return $this;
+    }
+
+    /**
+     * Effectue les validations du pseudo
+     * @param string $pseudo
+     * @param string $msg
+     * @return bool
+     */
+    public static function validatePseudo($pseudo, &$msg)
+    {
+        if (empty($pseudo)) {
+            $msg = 'Le pseudo est obligatoire.';
+            return false;
+        } elseif (!preg_match('/^[[:alnum:]_-]{6,20}$/', $pseudo)) {
+            $msg = 'Le pseudo doit faire entre 6 et 20 caractères et ne contenir que des lettres, des chiffres, _ ou -.';
+            return false;
+        } else {
+            $pdo = Cnx::getInstance();
+            $stmt = $pdo->query('SELECT COUNT(*) FROM membre WHERE pseudo = ' . $pdo->quote($pseudo));
+
+            if ($stmt->fetchColumn() != 0) {
+                $msg = 'Ce pseudo éxiste déjà.';
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Effectue les validations du nom
+     * @param string $nom
+     * @param string $msg
+     * @return bool
+     */
+    public static function validateNom($nom, &$msg)
+    {
+        if (empty($nom)) {
+            $msg = 'Le nom est obligatoire.';
+            return false;
+        } elseif (strlen($nom) > 20) {
+            $msg = 'Le nom ne doit pas faire plus de 20 charactères.';
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Effectue les validations du prénom
+     * @param string $prenom
+     * @param string $msg
+     * @return bool
+     */
+    public static function validatePrenom($prenom, &$msg)
+    {
+        if (empty($prenom)) {
+            $msg = 'Le prénom est obligatoire.';
+            return false;
+        } elseif (strlen($prenom) > 20) {
+            $msg = 'Le prénom ne doit pas faire plus de 20 charactères.';
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Effectue les validations de l'email
+     * @param string $email
+     * @param string $msg
+     * @return bool
+     */
+    public static function validateEmail($email, &$msg)
+    {
+        if (empty($email)) {
+            $msg = "L'email est obligatoire.";
+            return false;
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $msg = "L'email n'est pas valide";
+            return false;
+        } elseif (strlen($email) > 50) {
+            $msg = "L'email ne doit pas faire plus de 50 charactères";
+            return false;
+        } else {
+            $pdo = Cnx::getInstance();
+            $stmt = $pdo->query('SELECT COUNT(*) FROM membre WHERE email = ' . $pdo->quote($email));
+
+            if ($stmt->fetchColumn() != 0) {
+                $msg = 'Cet email éxiste déjà.';
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Effectue les validations du mot de passe
+     * @param string $password
+     * @param string $msg
+     * @return bool
+     */
+    public static function validatePassword($password, &$msg)
+    {
+        if (empty($password)) {
+            $msg = "Le mot de passe est obligatoire.";
+            return false;
+        } elseif (strlen($password) < 6 || strlen($password) > 60) {
+            $msg = "Le mot de passe doit être supérieure à 6 caractères et inférieure à 60";
+            return false;
+        }
+
+        return true;
     }
 
     /**
