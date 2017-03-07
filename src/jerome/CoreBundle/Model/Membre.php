@@ -323,6 +323,37 @@ class Membre implements MembreInterface
         return true;
     }
 
+    public function save()
+    {
+        if (!empty($this->id)) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
+    }
+    private function insert()
+    {
+        $pdo = Cnx::getInstance();
+        $query = 'INSERT INTO membre ('
+            . 'nom, prenom, email, pseudo, mdp, civilite, date_enregistrement) '
+            . 'VALUES(:nom, :prenom, :email, :pseudo, :mdp, :civilite, NOW())'
+        ;
+        $pdo->exec($query);
+        $this->setId($pdo->lastInsertId());
+        $this->setStatut(0);
+    }
+
+    private function update()
+    {
+        $pdo = Cnx::getInstance();
+        $query = 'UPDATE membre SET '
+            . 'nom = :nom, prenom = :prenom, email = :email, pseudo = :pseudo'
+            . (!empty($this->password) ? ', mdp = :mdp' : '') . ', civilite = :civilite, statut = :statut'
+            . ' WHERE id_membre = ' . $this->id;
+
+        $pdo->exec($query);
+    }
+
     /**
      * Tente de connecter un utilisateur et retourne soit un membre soit null
      * @param $pseudo
