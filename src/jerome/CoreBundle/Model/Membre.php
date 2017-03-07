@@ -3,8 +3,9 @@ namespace jerome\CoreBundle\Model;
 
 
 use kayzore\bundle\KBundle\Cnx;
+use kayzore\bundle\KBundle\Membre as MembreInterface;
 
-class Membres
+class Membre implements MembreInterface
 {
     private $id;
     private $pseudo;
@@ -180,7 +181,7 @@ class Membres
 
     public function connectAccount()
     {
-
+        
     }
 
     /**
