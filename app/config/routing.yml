@@ -1,22 +1,22 @@
-public.lk_homepage:
+public.ls_homepage:
     route: '/'
     type: get
     controller: 'myController'
     methode: 'home'
 
-public.lk_contact:
+public.ls_contact:
     route: '/contact'
     type: post
     controller: 'myController'
     methode: 'contact'
 
-public.lk_test:
+public.ls_test:
     route: '/test/:id'
     type: get
     controller: 'myController'
     methode: 'test'
 
-public.lk_test2:
+public.ls_test2:
     route: '/test/:id/ok'
     type: get
     controller: 'myController'
