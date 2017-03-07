@@ -323,6 +323,9 @@ class Membre implements MembreInterface
         return true;
     }
 
+    /**
+     *  Fonction qui gère l'insertion ou la modification d'un membre
+     */
     public function save()
     {
         if (!empty($this->id)) {
@@ -331,6 +334,10 @@ class Membre implements MembreInterface
             $this->insert();
         }
     }
+
+    /**
+     * Insert un nouveau membre dans la BDD
+     */
     private function insert()
     {
         $pdo = Cnx::getInstance();
@@ -343,6 +350,9 @@ class Membre implements MembreInterface
         $this->setStatut(0);
     }
 
+    /**
+     * Met à jour un membre dans la BDD
+     */
     private function update()
     {
         $pdo = Cnx::getInstance();
