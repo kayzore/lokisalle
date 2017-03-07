@@ -3,6 +3,7 @@ namespace jerome\CoreBundle\Model;
 
 
 use kayzore\bundle\KBundle\Cnx;
+use kayzore\bundle\KBundle\KFramework;
 use kayzore\bundle\KBundle\Membre as MembreInterface;
 
 class Membre implements MembreInterface
@@ -179,9 +180,47 @@ class Membre implements MembreInterface
         return $this;
     }
 
-    public function connectAccount()
+    /**
+     * Tente de connecter un utilisateur et retourne soit un membre soit null
+     * @param $pseudo
+     * @param $password
+     * @return Membre|null
+     */
+    public static function connexion($pseudo, $password)
     {
-        
+        if (is_null($_SESSION[kFramework::getProjectAlias() . '_utilisateur'])) {
+            $stmt = Cnx::getInstance()->prepare('SELECT *, count(id_membre) as nb_membre FROM membre WHERE pseudo = :pseudo AND mdp = :mdp');
+            $stmt->bindParam('pseudo', $pseudo, \PDO::PARAM_STR);
+            $stmt->bindValue('mdp', md5($password), \PDO::PARAM_STR);
+            $stmt->execute();
+            $membre = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if ($membre['nb_membre'] == '1') {
+                unset($membre['mdp']);
+                unset($membre['nb_membre']);
+                $_SESSION[kFramework::getProjectAlias() . '_utilisateur'] = $membre;
+                return new self(array(
+                    'id'        => $membre['id_membre'],
+                    'pseudo'    => $membre['pseudo'],
+                    'nom'       => $membre['nom'],
+                    'prenom'    => $membre['prenom'],
+                    'email'     => $membre['email'],
+                    'civilite'  => $membre['civilite'],
+                    'statut'    => $membre['statut']
+                ));
+            }
+            return null;
+        }
+        return $_SESSION[kFramework::getProjectAlias() . '_utilisateur'];
+    }
+
+    /**
+     * Deconnecte un utilisateur s'il est déjà connecté
+     */
+    public static function deconnexion()
+    {
+        if (!is_null($_SESSION['ls_utilisateur'])) {
+            $_SESSION['ls_utilisateur'] = null;
+        }
     }
 
     /**
