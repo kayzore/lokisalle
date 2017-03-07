@@ -7,9 +7,7 @@ use kayzore\bundle\KBundle\Controller;
 class CoreController extends Controller
 {
     public function homeAction() {
-        echo $this->twig->render('test.html.twig', array(
-            'message'       => 'Home page',
-            'current_url'   => $this->getUrl('public.ls_homepage')
+        echo $this->twig->render('front/accueil.html.twig', array(
         ));
     }
 }

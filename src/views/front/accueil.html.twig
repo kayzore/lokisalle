@@ -8,41 +8,11 @@
 
 {% block css %}
     {{ parent() }}
-    <link href="{{ assets('web/assets/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
 {% endblock css %}
 
 {% block js %}
     {{ parent() }}
-    <script src="{{ assets('web/assets/js/moment.js') }}"></script>
-    <script src="{{ assets('web/assets/js/moment-with-locales.js') }}"></script>
-    <script src="{{ assets('web/assets/js/app-datetimepicker.js') }}"></script>
-    <script src="{{ assets('web/assets/js/jsRouting.js') }}"></script>
-    <script src="{{ assets('web/assets/js/searchSystem.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-datetimepicker.fr.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
 {% endblock js %}
 
 {% block bodyContent %}
-    <div class="col-md-3">
-        {{ front.menu('Catégories', 'list-group', true, ['Toutes','Réunion', 'Bureau', 'Formation'], '', 'categories') }}
-        {{ front.menu('Ville', 'list-group', true, ['Toutes','Paris', 'Lyon', 'Marseille'], '', 'villes') }}
-
-        {% set nbCapacite = [''] %}
-        {% for i in range(0, capacite[0].max_capacite - 1) %}
-            {% set nbCapacite = nbCapacite|merge(['< ' ~ loop.index]) %}
-        {% endfor %}
-        {{ front.menu('Capacité', 'select', true, nbCapacite) }}
-        {{ front.menu('Prix', 'list-group', true, ['Tous', '< 500 €', '< 1 000 €', '< 1 500 €', '< 2 000 €', '< 2 500 €', '< 3 000 €'], '', 'prix') }}
-        {{ front.menu('Période', 'datepicker', true, [], 'Date d\'arrivée') }}
-        {{ front.menu('Période', 'datepicker', false, [], 'Date de départ') }}
-        <br>
-        <p class="text-center"><em id="nbProduit">{{ nb_total_produit[0].nb_total_produit }} résultats</em></p>
-    </div>
-    <div class="col-md-9">
-        <div class="row" id="listeProduits">
-            {{ include('front/search/liste-produits.html.twig') }}
-        </div>
-    </div>
 {% endblock bodyContent %}
