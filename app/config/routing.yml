@@ -1,23 +1,5 @@
 public.ls_homepage:
     route: '/'
     type: get
-    controller: 'myController'
+    controller: 'CoreController'
     methode: 'home'
-
-public.ls_contact:
-    route: '/contact'
-    type: post
-    controller: 'myController'
-    methode: 'contact'
-
-public.ls_test:
-    route: '/test/:id'
-    type: get
-    controller: 'myController'
-    methode: 'test'
-
-public.ls_test2:
-    route: '/test/:id/ok'
-    type: get
-    controller: 'myController'
-    methode: 'test2'
