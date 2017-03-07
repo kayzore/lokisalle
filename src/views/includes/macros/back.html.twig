@@ -1,0 +1,135 @@
+{% macro headPage(title, breadcrumb, url, params) %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{ title }}</h1>
+            <ol class="breadcrumb">
+                {% for element in breadcrumb %}
+                    <li {% if loop.index == breadcrumb|length %}class="active"{% endif %}>
+                        {{ element|raw|nl2br }}
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro rowSalles(id, nom, desc, imgSrc, imgAlt, pays, ville, adresse, cp, capacite, categorie) %}
+    <tr>
+        <td style="vertical-align:middle" class="text-center">{{ id }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ nom }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ desc|truncate(350) }}</td>
+        <td style="vertical-align:middle">
+            <a href="{{ imgSrc }}" data-lightbox="salle-{{ id }}" data-title="{{ imgAlt }}">
+                <img src="{{ imgSrc }}" class="img-responsive center-block imgSalleAdmin" alt="{{ imgAlt }}">
+            </a>
+        </td>
+        <td style="vertical-align:middle" class="text-center">{{ pays }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ ville }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ adresse }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ cp }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ capacite }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ categorie }}</td>
+        <td style="vertical-align:middle" class="text-center">
+            <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a href="#" class="btnUpdateSalle btn btn-primary" data-id="{{ id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a href="#" class="btnDeleteSalle btn btn-danger" data-id="{{ id }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </div>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro rowProduits(idProduit, dateArrivee, dateDepart, idSalle, nomSalle, srcImgSalle, altImgSalle, prix, statut) %}
+    <tr>
+        <td style="vertical-align:middle" class="text-center">{{ idProduit }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ dateArrivee|date('d/m/Y H:i:s') }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ dateDepart|date('d/m/Y H:i:s') }}</td>
+        <td style="vertical-align:middle" class="text-center" data-id="{{ idSalle }}">
+            {{ idSalle }} - {{ nomSalle }}<br>
+            <img src="{{ srcImgSalle }}" class="img-responsive center-block imgSalleAdmin" alt="{{ altImgSalle }}">
+        </td>
+        <td style="vertical-align:middle" class="text-center">{{ prix }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ statut }}</td>
+        <td style="vertical-align:middle" class="text-center">
+            <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a href="#" class="btnUpdateProduit btn btn-primary" data-id="{{ idProduit }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a href="#" class="btnDeleteProduit btn btn-danger" data-id="{{ idProduit }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </div>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro rowMembres(idMembre, pseudo, nom, prenom, email, civilite, statut, dateRegister) %}
+    <tr>
+        <td style="vertical-align:middle" class="text-center">{{ idMembre }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ pseudo }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ nom }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ prenom }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ email }}</td>
+        <td style="vertical-align:middle" class="text-center">
+            {% if civilite == 'm' %}
+                Homme
+            {% elseif civilite == 'f' %}
+                Femme
+            {% endif %}
+        </td>
+        <td style="vertical-align:middle" class="text-center">
+            {% if statut == '0' %}
+                Membre
+            {% elseif statut == '1' %}
+                Admin
+            {% endif %}
+        </td>
+        <td style="vertical-align:middle" class="text-center">{{ dateRegister|date('d/m/Y H:i') }}</td>
+        <td style="vertical-align:middle" class="text-center">
+            <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a href="#" class="btnUpdateMembre btn btn-primary" data-id="{{ idMembre }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a href="#" class="btnDeleteMembre btn btn-danger" data-id="{{ idMembre }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </div>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro rowAvis(idAvis, idMembre, emailMembre, idSalle, nomSalle, comment, note, dateRegister) %}
+    <tr>
+        <td style="vertical-align:middle" class="text-center">{{ idAvis }}</td>
+        <td style="vertical-align:middle" class="text-center" data-id="{{ idMembre }}">
+            {% if emailMembre is not null %}
+                {{ idMembre ~ ' - ' ~ emailMembre }}
+            {% else %}
+                {{ idMembre }} - <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Membre supprimé
+            {% endif %}
+        </td>
+        <td style="vertical-align:middle" class="text-center" data-id="{{ idSalle }}">{{ idSalle ~ ' - ' ~ nomSalle }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ comment }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ note }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ dateRegister|date('d/m/Y H:i:s') }}</td>
+        <td style="vertical-align:middle" class="text-center">
+            <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a href="#" class="btnUpdateAvis btn btn-primary" data-id="{{ idAvis }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a href="#" class="btnDeleteAvis btn btn-danger" data-id="{{ idAvis }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </div>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro rowCommandes(idCommande, idAndEmailMembre, idAndNomSalle, dateArrivee, dateDepart, prix, dateRegister) %}
+    <tr>
+        <td style="vertical-align:middle" class="text-center">{{ idCommande }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ idAndEmailMembre }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ idAndNomSalle }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ dateArrivee|date('d/m/Y H:m:s') }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ dateDepart|date('d/m/Y H:m:s') }}</td>
+        <td style="vertical-align:middle" class="text-center">{{ prix|number_format(2, ',', ' ') }} €</td>
+        <td style="vertical-align:middle" class="text-center">{{ dateRegister }}</td>
+        <td style="vertical-align:middle" class="text-center">
+            <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a href="#" class="btnDeleteCommande btn btn-danger" data-id="{{ idCommande }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </div>
+        </td>
+    </tr>
+{% endmacro %}

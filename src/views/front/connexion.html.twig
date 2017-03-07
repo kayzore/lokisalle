@@ -1,0 +1,38 @@
+{% extends 'layout.html.twig' %}
+
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Connexion -
+{% endblock title %}
+
+{% block bodyContent %}
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <h2 class="text-center">Se connecter</h2>
+            {% if errors is not empty %}
+                <div class="alert alert-danger text-center">
+                    <strong>Le formulaire contient des erreurs</strong>
+                    {% if errors.connexion is defined %}
+                        <br>
+                        {{ errors.connexion }}
+                    {% endif %}
+                </div>
+            {% endif %}
+            <form method="post" class="form-horizontal">
+                <div class="form-group {{ form.getErrorClass(errors, 'pseudoInput') }}">
+                    {{ form.input('Votre Pseudo', 'pseudo', 'text', 'md-5', 'md-7', 'Votre Pseudo', formContent.pseudoInput, errors, 'pseudoInput') }}
+                </div>
+                <div class="form-group {{ form.getErrorClass(errors, 'passwordInput') }}">
+                    {{ form.input('Votre Mot de passe', 'password', 'password', 'md-5', 'md-7', 'Votre mot de passe', formContent.passwordInput, errors, 'passwordInput') }}
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <button class="btn btn-success btn-block" type="submit">Connexion</button>
+                        <a href="{{ getRoute('public.inscription') }}" class="btn btn-primary btn-xs btn-block">Inscription</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock bodyContent %}

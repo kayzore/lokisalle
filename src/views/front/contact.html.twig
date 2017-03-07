@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Nous contacter -
+{% endblock title %}
+
+{% block bodyContent %}
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <h2 class="text-center">Nous contacter</h2>
+            {% if success is defined and success == false %}
+                <div class="alert alert-danger text-center">
+                    <strong>Erreur lors de l'envoi :</strong>
+                    {{ motif }}
+                </div>
+            {% elseif success is defined and success == true %}
+                <div class="alert alert-success text-center">
+                    <strong>Envoi du message réussi</strong>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    <p>
+                        <strong>Afin de tester l'envoi de mail, l'email sera envoyé à l'email rentré dans le champs ci-dessous.</strong>
+                    </p>
+                    <p>
+                        <strong>En production, l'email sera reçu par les administrateurs du site</strong>
+                    </p>
+                </div>
+            {% endif %}
+            <form method="post" class="form-horizontal">
+                <div class="form-group {{ form.getErrorClass(errors, 'emailInput') }}">
+                    {{ form.input('Votre Email', 'from', 'email', 'md-4', 'md-8', 'Votre Email', '', errors, 'emailInput') }}
+                </div>
+                <div class="form-group {{ form.getErrorClass(errors, 'objectInput') }}">
+                    {{ form.input('Objet du mail', 'object', 'text', 'md-4', 'md-8', 'Objet du mail', '', errors, 'objectInput') }}
+                </div>
+                <div class="form-group {{ form.getErrorClass(errors, 'messageTextarea') }}">
+                    {{ form.textarea('Message', 'message', 'Votre message', 'md-4', 'md-8', errors, 'messageTextarea') }}
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <button class="btn btn-success btn-block" type="submit">Envoyer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock bodyContent %}

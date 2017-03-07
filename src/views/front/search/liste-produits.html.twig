@@ -1,0 +1,30 @@
+{% import "includes/macros/front.html.twig" as front %}
+
+{% for produit in listProduits %}
+    {% set liste_notes = [] %}
+    {% for note in notes[produit.id_produit] %}
+        {% set liste_notes = liste_notes|merge([note]) %}
+    {% endfor %}
+    {{ front.salle(
+    'web/uploads/' ~ produit.photo,
+    'Salle de ' ~ produit.categorie,
+    produit.titre,
+    produit.prix,
+    produit.description,
+    produit.date_arrivee, produit.date_depart,
+    getMoyenne(liste_notes),
+    produit.id_produit, produit.categorie|replace({'é': 'e'}) ~ '-' ~ produit.titre|replace({'é': 'e', 'è': 'e', 'à': '&', 'ç': 'c'})
+    ) }}
+{% else %}
+    <div class="col-md-4 col-md-offset-4">
+        <div class="alert alert-info text-center">Aucun produit disponible pour cette recherche</div>
+    </div>
+{% endfor %}
+
+<span id="nbTotalProduit" class="is_hidden">{{ nb_total_produit[0].nb_total_produit }}</span>
+
+{% if nb_total_produit[0].nb_total_produit > 6 %}
+    <div class="col-md-12 text-center">
+        <p><a href="#" class="btn btn-primary" id="btnVoirPlus">Voir plus <span class="is_hidden"><i class="fa fa-spinner fa-spin fa-fw"></i></span></a></p>
+    </div>
+{% endif %}

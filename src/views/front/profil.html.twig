@@ -1,0 +1,67 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}
+    Invoice -
+{% endblock title %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .table > tbody > tr > .emptyrow {
+            border-top: none;
+        }
+
+        .table > thead > tr > .emptyrow {
+            border-bottom: none;
+        }
+
+        .table > tbody > tr > .highrow {
+            border-top: 3px solid;
+        }
+    </style>
+{% endblock css %}
+
+{% block bodyContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="text-center"><strong>Historique des réservations</strong></h3>
+                </div>
+                <div class="panel-body">
+                    {% if liste_commandes is not empty %}
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
+                                <tr>
+                                    <th><strong>Nom produit</strong></th>
+                                    <th class="text-center"><strong>Dates de Réservation</strong></th>
+                                    <td class="text-right"><strong>Prix</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set prixTotal = 0 %}
+                                {% for article in liste_commandes %}
+                                    <tr>
+                                        <td>{{ article.titre }}</td>
+                                        <td class="text-center">{{ article.date_arrivee|date('d/m/Y H:m') }} - {{ article.date_depart|date('d/m/Y H:m') }}</td>
+                                        <td class="text-right">{{ article.prix|number_format(2, ',', ' ') }}€</td>
+                                    </tr>
+                                    {% set prixTotal = prixTotal + article.prix %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <p>
+                                <strong>Vous n'avez effectué aucune réservation</strong>
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock bodyContent %}

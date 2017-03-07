@@ -1,0 +1,136 @@
+{% extends 'admin.html.twig' %}
+
+{% import "includes/macros/back.html.twig" as back %}
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Statistiques -
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/Chart.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/statistiques.js') }}"></script>
+{% endblock js %}
+
+{% block bodyContent %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{ back.headPage('Statistiques', [
+            '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+            '<i class="fa fa-area-chart"></i> Statistiques'
+            ]) }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <table id="tableTopMoyennes" class="is_hidden">
+                            {% for salle in liste_top_avis_salle %}
+                                <tr>
+                                    <td>{{ salle.titre }}</td>
+                                    <td>{{ salle.moyenne }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <table id="tableTopCommandes" class="is_hidden">
+                            {% for salle in liste_top_commandes %}
+                                <tr>
+                                    <td>{{ salle.titre }}</td>
+                                    <td>{{ salle.nb_commande }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <table id="tableTopMembreQuantity" class="is_hidden">
+                            {% for membre in liste_top_membre_buy_quantity %}
+                                <tr>
+                                    <td>{% if membre.pseudo is not null %}{{ membre.pseudo }}{% else %}Membre supprimé{% endif %}</td>
+                                    <td>{{ membre.nb_commande }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <table id="tableTopMembrePrice" class="is_hidden">
+                            {% for membre in liste_top_membre_buy_price %}
+                                <tr>
+                                    <td>{% if membre.pseudo is not null %}{{ membre.pseudo }}{% else %}Membre supprimé{% endif %}</td>
+                                    <td>{{ membre.amount }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <table id="tableTopMembreTotalPrice" class="is_hidden">
+                            {% for membre in liste_top_membre_buy_total_price %}
+                                <tr>
+                                    <td>{% if membre.pseudo is not null %}{{ membre.pseudo }}{% else %}Membre supprimé{% endif %}</td>
+                                    <td>{{ membre.amount }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <div class="col-md-12">
+                            <div class="col-md-4 col-md-offset-1">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Top 5 des salles les mieux notées.</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="morris-bar-chart">
+                                            <canvas id="topFiveNote" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Top 5 des membres qui achètent le plus.</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="morris-bar-chart">
+                                            <canvas id="topFiveMembreQuantity" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Top 5 des membres qui achètent le plus cher.</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="morris-bar-chart">
+                                            <canvas id="topFiveMembrePrice" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Top 5 des salles les plus commandées.</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="morris-bar-chart">
+                                            <canvas id="topFiveCommande" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Top 5 des membres qui ont le plus de dépense.</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="morris-bar-chart">
+                                            <canvas id="topFiveMembreTotalPrice" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+{% endblock bodyContent %}

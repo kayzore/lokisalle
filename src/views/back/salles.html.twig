@@ -1,0 +1,144 @@
+{% extends 'admin.html.twig' %}
+
+{% import "includes/macros/back.html.twig" as back %}
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Gestion des salles -
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ assets('web/assets/css/lightbox.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/lightbox.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
+    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+    <script src="{{ assets('web/assets/js/salles.js') }}"></script>
+{% endblock %}
+
+{% block bodyContent %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{ back.headPage('Gestion des salles', [
+                '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+                '<i class="fa fa-inbox"></i> Gestion des salles'
+            ]) }}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button href="#" class="btn btn-primary" id="btnAddSalle">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">ID Salle</th>
+                                        <th class="text-center">Titre</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">photo</th>
+                                        <th class="text-center">Pays</th>
+                                        <th class="text-center">Ville</th>
+                                        <th class="text-center">Adresse</th>
+                                        <th class="text-center">CP</th>
+                                        <th class="text-center">Capacité</th>
+                                        <th class="text-center">Catégorie</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbodySalles">
+                                        {% for salle in listSalles %}
+                                            {{ back.rowSalles(
+                                            salle.id_salle,salle.titre, salle.description,
+                                            '../web/uploads/' ~ salle.photo, 'Salle de ' ~ salle.categorie,
+                                            salle.pays, salle.ville, salle.adresse, salle.cp,
+                                            salle.capacite, salle.categorie
+                                            ) }}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+    <div class="modal fade" id="salleModal" tabindex="-1" role="dialog" aria-labelledby="salleModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="salleModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" enctype="multipart/form-data" id="salleForm" method="post"
+                          action="../{{ getRoute('admin.sallesPost') }}" data-type="" data-id="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.input('Titre', 'titre', 'text', 'md-3', 'md-9', 'Titre de la salle', '', salleErrors, 'titreInput') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.textarea('Description', 'description', 'Description de la salle', 'md-3', 'md-9', salleErrors, 'descriptionTextarea') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.input('Photo', 'photo', 'file', 'md-3', 'md-9', '', salleErrors, 'photoInput') }}
+                                </div>
+                                <div class="form-group">
+                                    {% set nbCapacite = [] %}
+                                    {% for i in range(0, 199) %}
+                                        {% set nbCapacite = nbCapacite|merge([loop.index]) %}
+                                    {% endfor %}
+                                    {{ form.select('Capacité', 'capacite', nbCapacite, 'md-3', 'md-9') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.select('Catégorie', 'categorie', ['Réunion', 'Bureau', 'Formation'], 'md-3', 'md-9') }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.select('Pays', 'pays', ['France'], 'md-4', 'md-8') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.select('Ville', 'ville', ['Paris', 'Lyon', 'Marseille'], 'md-4', 'md-8') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.textarea('Adresse', 'adresse', 'Adresse de la salle', 'md-4', 'md-8', salleErrors, 'adresseTextarea') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.input('Code Postal', 'cp', 'text', 'md-4', 'md-8', 'Code Postal de la salle', '', salleErrors, 'cpInput') }}
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 pull-right">
+                                        <button type="submit" class="btn btn-primary">
+                                            Ajouter <span class="loader"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock bodyContent %}

@@ -1,0 +1,71 @@
+{% extends 'admin.html.twig' %}
+
+{% import "includes/macros/back.html.twig" as back %}
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Gestion des commandes -
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
+    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block bodyContent %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{ back.headPage('Gestion des commandes', [
+            '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+            '<i class="fa fa-users"></i> <a href="../' ~ getRoute('admin.gestionMembres') ~ '">Gestion des membres</a>',
+            '<i class="fa fa-list"></i> Gestion des commandes'
+            ]) }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">ID Commande</th>
+                                        <th class="text-center">ID Membre - Email</th>
+                                        <th class="text-center">ID Produit - Nom Salle</th>
+                                        <th class="text-center">Date D'arrivée</th>
+                                        <th class="text-center">Date Départ</th>
+                                        <th class="text-center">Prix</th>
+                                        <th class="text-center">Date d'enregistrement</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbodyCommandes">
+                                        {% for commande in liste_commandes %}
+                                            {{ back.rowCommandes(
+                                            commande.id_commande, commande.id_membre ~ ' - ' ~ commande.email,
+                                            commande.id_produit ~ ' - ' ~ commande.titre,
+                                            commande.date_arrivee, commande.date_depart,
+                                            commande.prix, commande.date_enregistrement
+                                            ) }}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+{% endblock bodyContent %}

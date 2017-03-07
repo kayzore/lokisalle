@@ -1,0 +1,83 @@
+{% macro input(textLabel, id, type, colLabel, colDiv, placeholder, value, errors, keyError) %}
+    {% set idInput = id ~ 'Input' %}
+    <label class="col-{{ colLabel }} control-label"
+           for="{{ id }}Input">{{ textLabel }}</label>
+    <div class="col-{{ colDiv }}">
+        <input id="{{ id }}Input" name="{{ id }}Input" {% if placeholder is defined %}placeholder="{{ placeholder }}"{% endif %}
+               class="{% if type == 'text' or type == 'password' or type == 'email' %}form-control{% endif %}" type="{{ type }}"
+               value="{{ value }}">
+        {{ _self.getErrorMsg(errors, keyError) }}
+    </div>
+{% endmacro %}
+
+{% macro inputDateTimePicker(textLabel, id, type, colLabel, colDiv, placeholder, value, errors, keyError) %}
+    {% set idInput = id ~ 'Input' %}
+    <label class="col-{{ colLabel }} control-label" for="{{ id }}Input">{{ textLabel }}</label>
+    <div class="col-{{ colDiv }}">
+        <input id="{{ id }}Input" name="{{ id }}Input" class="form-control datetimepickerAdmin" type="text" value="{{ value }}">
+        {{ _self.getErrorMsg(errors, keyError) }}
+    </div>
+{% endmacro %}
+
+{% macro select(textLabel, id, options, colLabel, colDiv, selectedValue, errors, keyError) %}
+    <label class="col-{{ colLabel }} control-label" for="{{ id }}Select">{{ textLabel }}</label>
+    <div class="col-{{ colDiv }}">
+        <select id="{{ id }}Select" name="{{ id }}Select" class="form-control">
+            {% for option in options %}
+                <option value="{{ loop.index0 }}" {% if selectedValue == loop.index0 %}selected="selected"{% endif %}>
+                    {{ option|raw|nl2br }}
+                </option>
+            {% endfor %}
+        </select>
+        {{ _self.getErrorMsg(errors, keyError) }}
+    </div>
+{% endmacro %}
+
+{% macro selectProduits(textLabel, id, options, colLabel, colDiv, selectedValue, errors, keyError) %}
+    <label class="col-{{ colLabel }} control-label" for="{{ id }}Select">{{ textLabel }}</label>
+    <div class="col-{{ colDiv }}">
+        <select id="{{ id }}Select" name="{{ id }}Select" class="form-control">
+            {% for option in options %}
+                <option value="{{ option.id }}" {% if selectedValue == option.id %}selected="selected"{% endif %}>
+                    {{ option.text }}
+                </option>
+            {% endfor %}
+        </select>
+        {{ _self.getErrorMsg(errors, keyError) }}
+    </div>
+{% endmacro %}
+
+{% macro selectAvis(textLabel, id, options, colLabel, colDiv, selectedValue, errors, keyError) %}
+    <label class="col-{{ colLabel }} control-label" for="{{ id }}Select">{{ textLabel }}</label>
+    <div class="col-{{ colDiv }}">
+        <select id="{{ id }}Select" name="{{ id }}Select" class="form-control">
+            {% for option in options %}
+                <option value="{{ option }}" {% if selectedValue == option %}selected="selected"{% endif %}>
+                    {{ option }}
+                </option>
+            {% endfor %}
+        </select>
+        {{ _self.getErrorMsg(errors, keyError) }}
+    </div>
+{% endmacro %}
+
+{% macro textarea(textLabel, id, placeholder, colLabel, colDiv, errors, keyError, value) %}
+    <label class="col-{{ colLabel }} control-label" for="{{ id }}Textarea">{{ textLabel }}</label>
+    <div class="col-{{ colDiv }}">
+        <textarea class="form-control" id="{{ id }}Textarea" name="{{ id }}Textarea"
+                  placeholder="{{ placeholder }}" style="resize: vertical">{{ value }}</textarea>
+        {{ _self.getErrorMsg(errors, keyError) }}
+    </div>
+{% endmacro %}
+
+{% macro getErrorMsg(errors, keyError) %}
+    {% if errors[keyError] %}
+        <span class="help-block">{{ errors[keyError] }}</span>
+    {% endif %}
+{% endmacro %}
+
+{% macro getErrorClass(errors, keyError) %}
+    {% if errors[keyError] %}
+        has-error
+    {% endif %}
+{% endmacro %}

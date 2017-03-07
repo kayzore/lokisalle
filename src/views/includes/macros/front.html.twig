@@ -1,0 +1,64 @@
+{% macro menu(title, type, showTitle, content, subTitle, categorie) %}
+    {% if showTitle == true %}
+        <h4><b>{{ title }}</b></h4>
+    {% endif %}
+
+    {% if subTitle is defined %}
+        <h5>{{ subTitle }}</h5>
+    {% endif %}
+
+    {% set listReplace = {'é': 'e', 'è': 'e', 'à': '&', 'ç': 'c', '<': '', '>': '', ' ': '', '€': ''} %}
+    {% if type == 'list-group' %}
+        <div class="list-group">
+            {% for element in content %}
+                <a href="#" class="list-group-item {{ categorie }} list-group-search {% if loop.index0 == 0 %}active{% endif %}"
+                   data-filter="{{ element }}">{{ element }}</a>
+            {% endfor %}
+        </div>
+    {% elseif type == 'select' %}
+        <select class="form-control select-search">
+            {% for element in content %}
+                <option value="{{ element|replace(listReplace) }}">{{ element }}</option>
+            {% endfor %}
+        </select>
+    {% elseif type == 'datepicker' %}
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            <input id="prependedtext" name="prependedtext" class="form-control input-search datetimepicker" type="text">
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro salle(imgSrc, imgAlt, name, prix, shortDesc, dateArrivee, dateDepart, note, idProduit, slugProduit) %}
+    <div class="col-md-4">
+        <div class="thumbnail" id="{{ idProduit }}">
+            <a href="{{ getRoute('public.produitView', {id: idProduit, slug: slugProduit|lower|replace({' ': '-'})}) }}">
+                <img src="{{ imgSrc }}" alt="{{ imgAlt }}">
+            </a>
+            <div class="caption">
+                <p>
+                    <a href="{{ getRoute('public.produitView', {id: idProduit, slug: slugProduit|lower|replace({' ': '-'})}) }}">
+                        <b>{{ name }}</b>
+                    </a>
+                    <span class="pull-right"><b>{{ prix }} €</b></span>
+                </p>
+                <p>{{ shortDesc|truncate(190) }}</p>
+                <p>
+                    <i class="fa fa-calendar" aria-hidden="true"></i> {{ dateArrivee|date('d/m/Y') }} au {{ dateDepart|date('d/m/Y') }}
+                </p>
+                <p>
+                    {% if note > 0 %}
+                        {{ getNote(note)|raw|nl2br }}
+                    {% else %}
+                        0 Avis
+                    {% endif %}
+                    <span class="pull-right">
+                        <a href="{{ getRoute('public.produitView', {id: idProduit, slug: slugProduit|lower|replace({' ': '-'})}) }}">
+                            <i class="fa fa-search" aria-hidden="true"></i> Voir
+                        </a>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

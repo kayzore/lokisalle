@@ -1,0 +1,101 @@
+{% extends 'admin.html.twig' %}
+
+{% import "includes/macros/back.html.twig" as back %}
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Gestion des avis -
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/moment.js') }}"></script>
+    <script src="{{ assets('web/assets/js/moment-with-locales.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
+    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block bodyContent %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{ back.headPage('Gestion des avis', [
+            '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+            '<i class="fa fa-users"></i> <a href="../' ~ getRoute('admin.gestionMembres') ~ '">Gestion des membres</a>',
+            '<i class="fa fa-commenting"></i> Gestion des avis'
+            ]) }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">ID Avis</th>
+                                        <th class="text-center">ID Membre - Email</th>
+                                        <th class="text-center">ID Salle - Nom Salle</th>
+                                        <th class="text-center">Commentaire</th>
+                                        <th class="text-center">Note</th>
+                                        <th class="text-center">Date d'enregistrement</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbodyAvis">
+                                    {% for avis in liste_avis %}
+                                        {{ back.rowAvis(avis.id_avis, avis.id_membre, avis.email, avis.id_salle, avis.titre, avis.commentaire, avis.note, avis.avis_date) }}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+
+    <div class="modal fade" id="avisModal" tabindex="-1" role="dialog" aria-labelledby="avisModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="avisModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" id="avisForm">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form.textarea('Commentaire', 'commentaire', 'Votre commentaire sur la salle', 'md-2', 'md-9') }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.selectAvis('Note', 'note', ['', '1', '2', '3', '4', '5'], 'md-2', 'md-9', '0') }}
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        Modifier <span class="loader"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock bodyContent %}

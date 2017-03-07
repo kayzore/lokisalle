@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    Mon panier -
+{% endblock title %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/jsRouting.js') }}"></script>
+    <script src="{{ assets('web/assets/js/panier.js') }}"></script>
+{% endblock js %}
+
+{% block bodyContent %}
+    <div class="col-md-12" id="blockPanier">
+        {{ include('front/panier/liste-produits.html.twig') }}
+    </div>
+{% endblock bodyContent %}

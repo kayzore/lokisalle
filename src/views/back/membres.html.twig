@@ -1,0 +1,128 @@
+{% extends 'admin.html.twig' %}
+
+{% import "includes/macros/back.html.twig" as back %}
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Gestion des membres -
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/moment.js') }}"></script>
+    <script src="{{ assets('web/assets/js/moment-with-locales.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
+    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block bodyContent %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{ back.headPage('Gestion des membres', [
+            '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+            '<i class="fa fa-users"></i> Gestion des membres'
+            ]) }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button href="#" class="btn btn-primary" id="btnAddMembre">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">ID Membre</th>
+                                        <th class="text-center">Pseudo</th>
+                                        <th class="text-center">Nom</th>
+                                        <th class="text-center">Prénom</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Civilité</th>
+                                        <th class="text-center">Statut</th>
+                                        <th class="text-center">Date d'enregistrement</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbodyMembres">
+                                    {% for membre in listeMembres %}
+                                        {{ back.rowMembres(membre.id_membre, membre.pseudo, membre.nom, membre.prenom, membre.email, membre.civilite, membre.statut, membre.date_enregistrement) }}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+    <div class="modal fade" id="membreModal" tabindex="-1" role="dialog" aria-labelledby="membreModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="membreModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" id="membreForm" action="../{{ getRoute('admin.membresPost') }}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.input('Pseudo', 'pseudo', 'text', 'md-4', 'md-8', 'Pseudo') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.input('Mot de passe', 'password', 'password', 'md-4', 'md-8', 'Mot de passe') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.input('Nom', 'nom', 'text', 'md-4', 'md-8', 'Nom') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.input('Prénom', 'prenom', 'text', 'md-4', 'md-8', 'Prénom') }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.input('Email', 'email', 'email', 'md-3', 'md-9', 'Email') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.select('Civilité', 'civilite', ['Homme', 'Femme'], 'md-3', 'md-9') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.select('Statut', 'statut', ['Membre', 'Admin'], 'md-3', 'md-9') }}
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 pull-right">
+                                        <button type="submit" class="btn btn-primary">
+                                            Ajouter <span class="loader"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock bodyContent %}

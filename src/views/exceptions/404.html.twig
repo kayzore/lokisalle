@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    404 -
+{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">OUPS ! 404 !</h1>
+        <p class="text-center">
+            La page que vous recherchez à l'air d'avoir été déplacé, supprimé ou n'existe pas.<br>
+            <a href="{{ app.racineWeb }}{{ getRoute('public.homepage') }}">Retour sur la page d'accueil</a>
+            {% if dev_mode == true %}
+                <br>
+                <strong>Message dev : {{ message }}</strong>
+            {% endif %}
+        </p>
+    </div>
+{% endblock body %}

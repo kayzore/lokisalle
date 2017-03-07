@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-md-12">
+        {% if panier is defined and panier|length > 0 %}
+            <table class="table">
+                <tr>
+                    <th>Nom produit</th>
+                    <th class="text-center">Dates de Réservation</th>
+                    <th>Total produit</th>
+                    <th>Actions</th>
+                </tr>
+                {% set prixTotal = 0 %}
+                {% for id, article in panier %}
+                    <tr>
+                        <td>{{ article.nom }}</td>
+                        <td class="text-center">{{ article.date_arrivee|date('d/m/Y H:m') }} - {{ article.date_depart|date('d/m/Y H:m') }}</td>
+                        <td>{{ article.prix|number_format(2, ',', ' ') }}€</td>
+                        <td>
+                            <button class="btn btn-xs btn-primary btnDeleteProduit" data-id="{{ id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                    {% set prixTotal = prixTotal + article.prix %}
+                {% endfor %}
+                <tr>
+                    <th colspan="2">Total</th>
+                    <td>{{ prixTotal|number_format(2, ',', ' ') }} €</td>
+                    <td></td>
+                </tr>
+            </table>
+        {% else %}
+            <div class="alert alert-info">
+                <strong>Votre panier est vide</strong>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% if panier is defined and panier|length > 0 %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" action="{{ app.racineWeb }}{{ getRoute('public.facture') }}">
+                <p class="text-right">
+                    <button type="submit" name="commander" class="btn btn-primary">Valider la commande</button>
+                </p>
+            </form>
+        </div>
+    </div>
+{% endif %}

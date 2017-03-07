@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block css %}
+    <link href="{{ assets('web/assets/css/sb-admin.css') }}" rel="stylesheet">
+    <link href="{{ assets('web/assets/css/app.css') }}" rel="stylesheet">
+{% endblock css %}
+
+{% block js %}
+    <script src="{{ assets('web/assets/js/jsRouting.js') }}"></script>
+    <script src="{{ assets('web/assets/js/form.js') }}"></script>
+    <script src="{{ assets('web/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap.min.js') }}"></script>
+{% endblock js %}
+
+{% block body %}
+    <div id="wrapper">
+        {% include 'includes/admin/navbar.html.twig' %}
+        {% block bodyContent %}
+        {% endblock bodyContent %}
+    </div>
+{% endblock body %}

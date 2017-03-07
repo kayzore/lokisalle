@@ -1,0 +1,132 @@
+{% extends 'admin.html.twig' %}
+
+{% import "includes/macros/back.html.twig" as back %}
+{% import "includes/macros/forms.html.twig" as form %}
+
+{% block title %}
+    Gestion des produits -
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ assets('web/assets/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ assets('web/assets/js/moment.js') }}"></script>
+    <script src="{{ assets('web/assets/js/moment-with-locales.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-datetimepicker.fr.js') }}"></script>
+    <script src="{{ assets('web/assets/js/app-datetimepicker.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
+    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block bodyContent %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{ back.headPage('Gestion des produits', [
+                '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+                '<i class="fa fa-inbox"></i> <a href="../' ~ getRoute('admin.gestionSalles') ~ '">Gestion des salles</a>',
+                '<i class="fa fa-object-group"></i> Gestion des produits'
+            ]) }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button href="#" class="btn btn-primary" id="btnAddProduit">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="resultRequest"></div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">ID Produit</th>
+                                        <th class="text-center">Date d'arrivée</th>
+                                        <th class="text-center">Date de départ</th>
+                                        <th class="text-center">ID Salle / photo</th>
+                                        <th class="text-center">Prix</th>
+                                        <th class="text-center">Etat</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbodyProduit">
+                                    {% for produit in listProduits %}
+                                        {{ back.rowProduits(
+                                        produit.id_produit, produit.date_arrivee, produit.date_depart, produit.id_salle,
+                                        produit.titre, '../web/uploads/' ~ produit.photo, 'Salle de ' ~ produit.categorie,
+                                        produit.prix, produit.etat
+                                        ) }}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+    <div class="modal fade" id="produitModal" tabindex="-1" role="dialog" aria-labelledby="produitModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="produitModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" id="produitForm" action="../{{ getRoute('admin.produitsPost') }}"  data-type="" data-id="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.inputDateTimePicker('Date d\'arrivée', 'dateArrivee', 'text', 'md-4', 'md-8', 'yyyy-mm-dd hh:mm:ss', '', produitErrors, 'dateArriveeInput') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.inputDateTimePicker('Date de départ', 'dateDepart', 'text', 'md-4', 'md-8', 'yyyy-mm-dd hh:mm:ss', '', produitErrors, 'dateDepartInput') }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {% set listeDesSalles = [] %}
+                                    {% for salle in listSalles %}
+                                        {% set listeDesSalles = listeDesSalles|merge([{
+                                            'text': salle.id_salle ~ ' - ' ~ salle.titre ~ ' - ' ~ salle.adresse ~ ', ' ~ salle.cp ~ ' - ' ~ salle.capacite ~ ' pers.',
+                                            'id': salle.id_salle
+                                        }]) %}
+                                    {% endfor %}
+                                    {{ form.selectProduits('Salle', 'salle', listeDesSalles, 'md-3', 'md-9') }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.input('Tarif', 'tarif', 'text', 'md-3', 'md-9', 'Prix en euros', '', produitErrors, 'tarifInput') }}
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 pull-right">
+                                        <button type="submit" class="btn btn-primary">
+                                            Ajouter <span class="loader"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock bodyContent %}
