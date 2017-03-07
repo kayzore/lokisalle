@@ -17,6 +17,7 @@ class CoreController extends Controller
     public function connexionAction()
     {
         // Connexion
+        Membre::connexion('johndoe', 'johndoe');
     }
 
     public function executeConnexionAction()
@@ -27,5 +28,6 @@ class CoreController extends Controller
     public function deconnexionAction()
     {
         Membre::deconnexion();
+        $this->redirect('public.ls_connexion');
     }
 }
