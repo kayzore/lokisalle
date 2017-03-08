@@ -78,6 +78,7 @@ class FlashMessage
                         echo $champValue;
                         break;
                     }
+                    unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'][$inputName]);
                 }
             }
         }
