@@ -94,7 +94,7 @@ class CoreController extends Controller
 
             if (empty($errors)) {
                 if ($membre->connexion()) {
-                    FlashMessage::set('Connexion effectuée<br><a href="' . $this->getUrl('public.ls_homepage') . '">Cliquez-ici pour accéder au catalogue</a>');
+                    FlashMessage::set('Connexion effectuée<br><a href="../../' . $this->getUrl('public.ls_homepage') . '">Cliquez-ici pour accéder au catalogue</a>');
                 } else {
                     FlashMessage::set('Erreur lors de la connexion, vérifier vos identifiants', 'error');
                 }

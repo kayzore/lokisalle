@@ -48,10 +48,10 @@
                     <ul class="dropdown-menu">
                         {% if user is defined %}
                             <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i> Profil</a></li>
-                            <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
+                            <li><a href="{{ getRoute('public.ls_deconnexion') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
                         {% else %}
-                            <li><a href="#"><i class="fa fa-unlock" aria-hidden="true"></i> Connexion</a></li>
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Inscription</a></li>
+                            <li><a href="{{ getRoute('public.ls_connexion') }}"><i class="fa fa-unlock" aria-hidden="true"></i> Connexion</a></li>
+                            <li><a href="{{ getRoute('public.ls_inscription') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> Inscription</a></li>
                         {% endif %}
                     </ul>
                 </li>
