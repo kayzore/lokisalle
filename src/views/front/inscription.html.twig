@@ -9,7 +9,6 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="text-center">Inscription</h2>
             <form method="post" action="{{ getRoute('public.ls_execute_inscription') }}" class="form-horizontal well">
-
                 <div class="{{ getClassError('pseudoInput') }}">
                     <div class="col-md-6">
                         <input id="pseudoInput" name="pseudoInput" placeholder="Votre pseudo" class="form-control" type="text" value="">
@@ -19,23 +18,27 @@
                 <div class="form-group {{ getClassError('passwordInput') }}">
                     <div class="col-md-6">
                         <input id="passwordInput" name="passwordInput" placeholder="Votre mot de passe" class="form-control" type="password" value="">
+                        {{ getLabelError('passwordInput') }}
                     </div>
                 </div>
 
                 <div class="{{ getClassError('nomInput') }}">
                     <div class="col-md-6">
                         <input id="nomInput" name="nomInput" placeholder="Votre nom" class="form-control" type="text" value="">
+                        {{ getLabelError('nomInput') }}
                     </div>
                 </div>
                 <div class="form-group {{ getClassError('prenomInput') }}">
                     <div class="col-md-6">
                         <input id="prenomInput" name="prenomInput" placeholder="Votre prénom" class="form-control" type="text" value="">
+                        {{ getLabelError('prenomInput') }}
                     </div>
                 </div>
 
                 <div class="{{ getClassError('emailInput') }}">
                     <div class="col-md-6">
                         <input id="emailInput" name="emailInput" placeholder="Votre email" class="form-control" type="email" value="">
+                        {{ getLabelError('emailInput') }}
                     </div>
                 </div>
                 <div class="form-group {{ getClassError('civiliteSelect') }}">
@@ -44,6 +47,7 @@
                             <option value="0" selected="selected">Homme</option>
                             <option value="1">Femme</option>
                         </select>
+                        {{ getLabelError('civiliteSelect') }}
                     </div>
                 </div>
 
