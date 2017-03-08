@@ -11,33 +11,38 @@
             <form method="post" action="{{ getRoute('public.ls_execute_inscription') }}" class="form-horizontal well">
                 <div class="{{ getClassError('pseudoInput') }}">
                     <div class="col-md-6">
-                        <input id="pseudoInput" name="pseudoInput" placeholder="Votre pseudo" class="form-control" type="text" value="">
+                        <input id="pseudoInput" name="pseudoInput" placeholder="Votre pseudo" class="form-control"
+                               type="text" value="{{ getChampValue('pseudoInput') }}">
                         {{ getLabelError('pseudoInput') }}
                     </div>
                 </div>
                 <div class="form-group {{ getClassError('passwordInput') }}">
                     <div class="col-md-6">
-                        <input id="passwordInput" name="passwordInput" placeholder="Votre mot de passe" class="form-control" type="password" value="">
+                        <input id="passwordInput" name="passwordInput" placeholder="Votre mot de passe" class="form-control"
+                               type="password">
                         {{ getLabelError('passwordInput') }}
                     </div>
                 </div>
 
                 <div class="{{ getClassError('nomInput') }}">
                     <div class="col-md-6">
-                        <input id="nomInput" name="nomInput" placeholder="Votre nom" class="form-control" type="text" value="">
+                        <input id="nomInput" name="nomInput" placeholder="Votre nom" class="form-control"
+                               type="text" value="{{ getChampValue('nomInput') }}">
                         {{ getLabelError('nomInput') }}
                     </div>
                 </div>
                 <div class="form-group {{ getClassError('prenomInput') }}">
                     <div class="col-md-6">
-                        <input id="prenomInput" name="prenomInput" placeholder="Votre prénom" class="form-control" type="text" value="">
+                        <input id="prenomInput" name="prenomInput" placeholder="Votre prénom" class="form-control"
+                               type="text" value="{{ getChampValue('prenomInput') }}">
                         {{ getLabelError('prenomInput') }}
                     </div>
                 </div>
 
                 <div class="{{ getClassError('emailInput') }}">
                     <div class="col-md-6">
-                        <input id="emailInput" name="emailInput" placeholder="Votre email" class="form-control" type="email" value="">
+                        <input id="emailInput" name="emailInput" placeholder="Votre email" class="form-control"
+                               type="email" value="{{ getChampValue('emailInput') }}">
                         {{ getLabelError('emailInput') }}
                     </div>
                 </div>

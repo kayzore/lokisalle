@@ -35,23 +35,23 @@ class CoreController extends Controller
             ;
 
             if (!Membre::validatePseudo($_POST['pseudoInput'], $msg)) {
-                $errors['pseudoInput'] = [$msg, $_POST['pseudoInput']];
+                $errors['pseudoInput'] = $msg;
             }
 
             if (!Membre::validateNom($_POST['nomInput'], $msg)) {
-                $errors['nomInput'] = [$msg, $_POST['nomInput']];
+                $errors['nomInput'] = $msg;
             }
 
             if (!Membre::validatePrenom($_POST['prenomInput'], $msg)) {
-                $errors['prenomInput'] = [$msg, $_POST['prenomInput']];
+                $errors['prenomInput'] = $msg;
             }
 
             if (!Membre::validateEmail($_POST['emailInput'], $msg)) {
-                $errors['emailInput'] = [$msg, $_POST['emailInput']];
+                $errors['emailInput'] = $msg;
             }
 
             if (!Membre::validatePassword($_POST['passwordInput'], $msg)) {
-                $errors['passwordInput'] = [$msg, $_POST['passwordInput']];
+                $errors['passwordInput'] = $msg;
             }
 
             if (empty($errors)) {
@@ -59,6 +59,7 @@ class CoreController extends Controller
                 FlashMessage::set("Inscription effectuée, vous pouvez maintenant vous connecter");
                 $this->redirect('public.ls_connexion');
             } else {
+                $errors['champValue'] = $_POST;
                 FlashMessage::set('Le formulaire contient des erreurs', 'error', $errors);
                 $this->redirect('public.ls_inscription');
             }
