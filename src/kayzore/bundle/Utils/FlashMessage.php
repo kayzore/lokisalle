@@ -51,7 +51,7 @@ class FlashMessage
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
             foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
                 if ($champ == $inputName) {
-                    echo $message;
+                    echo '<p class="help-block">' . $message . '</p>';
                     unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'][$inputName]);
                 }
             }
