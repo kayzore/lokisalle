@@ -35,9 +35,6 @@ $get_moyenne = new Twig_SimpleFunction('getMoyenne', function (array $notes) {
 $this->twig->addFunction($get_moyenne);
 
 $get_class_error = new Twig_SimpleFunction('getClassError', function ($champ) {
-    if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage']) && ) {
-
-    }
-    return $note_html;
+    \kayzore\bundle\Utils\FlashMessage::displayFormClassError($champ);
 });
 $this->twig->addFunction($get_class_error);
