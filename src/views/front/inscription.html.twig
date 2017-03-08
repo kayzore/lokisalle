@@ -9,30 +9,36 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="text-center">Inscription</h2>
             <form method="post" action="{{ getRoute('public.ls_execute_inscription') }}" class="form-horizontal well">
-                <div class="form-group {{ getClassError('pseudoInput') }}">
+
+                <div class="{{ getClassError('pseudoInput') }}">
                     <div class="col-md-6">
                         <input id="pseudoInput" name="pseudoInput" placeholder="Votre pseudo" class="form-control" type="text" value="">
                         {{ getLabelError('pseudoInput') }}
                     </div>
-
+                </div>
+                <div class="form-group {{ getClassError('passwordInput') }}">
                     <div class="col-md-6">
                         <input id="passwordInput" name="passwordInput" placeholder="Votre mot de passe" class="form-control" type="password" value="">
                     </div>
                 </div>
-                <div class="form-group">
+
+                <div class="{{ getClassError('nomInput') }}">
                     <div class="col-md-6">
                         <input id="nomInput" name="nomInput" placeholder="Votre nom" class="form-control" type="text" value="">
                     </div>
-
+                </div>
+                <div class="form-group {{ getClassError('prenomInput') }}">
                     <div class="col-md-6">
                         <input id="prenomInput" name="prenomInput" placeholder="Votre prénom" class="form-control" type="text" value="">
                     </div>
                 </div>
-                <div class="form-group">
+
+                <div class="{{ getClassError('emailInput') }}">
                     <div class="col-md-6">
                         <input id="emailInput" name="emailInput" placeholder="Votre email" class="form-control" type="email" value="">
                     </div>
-
+                </div>
+                <div class="form-group {{ getClassError('civiliteSelect') }}">
                     <div class="col-md-6">
                         <select id="civiliteSelect" name="civiliteSelect" class="form-control">
                             <option value="0" selected="selected">Homme</option>
@@ -40,6 +46,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <button class="btn btn-success btn-block" type="submit">Inscription</button>
