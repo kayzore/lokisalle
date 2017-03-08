@@ -73,12 +73,13 @@ class FlashMessage
                 if ($champ == $inputName) {
                     if ($select && $optionSelect == $champValue) {
                         echo 'selected="selected"';
+                        unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'][$inputName]);
                         break;
                     } elseif (!$select) {
                         echo $champValue;
+                        unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'][$inputName]);
                         break;
                     }
-                    unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'][$inputName]);
                 }
             }
         }
