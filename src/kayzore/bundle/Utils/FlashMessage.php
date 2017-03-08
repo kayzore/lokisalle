@@ -52,6 +52,7 @@ class FlashMessage
             foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
                 if ($champ == $inputName) {
                     echo $message;
+                    unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'][$inputName]);
                 }
             }
         }
