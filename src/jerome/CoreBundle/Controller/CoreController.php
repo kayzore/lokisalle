@@ -3,6 +3,7 @@ namespace src\jerome\CoreBundle\Controller;
 
 
 use jerome\CoreBundle\Model\Membre;
+use jerome\CoreBundle\Model\Produit;
 use kayzore\bundle\KBundle\Controller;
 use kayzore\bundle\Utils\FlashMessage;
 
@@ -10,8 +11,9 @@ class CoreController extends Controller
 {
     public function homeAction()
     {
+
         echo $this->twig->render('front/accueil.html.twig', array(
-            'membres' => Membre::fetchAll()
+            'produits' => Produit::fetchAll()
         ));
     }
 
