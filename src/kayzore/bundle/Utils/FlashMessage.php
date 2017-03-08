@@ -34,7 +34,7 @@ class FlashMessage
                 : $_SESSION[kFramework::getProjectAlias() . '_flashMessage']['type']
             ;
 
-            echo '<div class="alert alert-' . $type . '" role="alert">'
+            echo '<div class="alert alert-' . $type . ' text-center" role="alert">'
                 . '<strong>' . $_SESSION[kFramework::getProjectAlias() . '_flashMessage']['message'] . '</strong>'
                 . '</div>'
             ;
