@@ -41,17 +41,24 @@ class FlashMessage
             foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
                 if ($champ == $inputName) {
                     echo 'has-error';
+                    break;
                 }
             }
         }
     }
 
-    public static function displayChampValue($inputName)
+    public static function displayChampValue($inputName, $select, $optionSelect)
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
-            foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
+            foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'] as $champ => $champValue) {
                 if ($champ == $inputName) {
-                    echo $message[1];
+                    if ($select && $optionSelect == $champValue) {
+                        echo 'selected="selected"';
+                        break;
+                    } elseif (!$select) {
+                        echo $champValue;
+                        break;
+                    }
                 }
             }
         }
@@ -62,8 +69,9 @@ class FlashMessage
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
             foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
                 if ($champ == $inputName) {
-                    echo '<p class="help-block">' . $message[0] . '</p>';
+                    echo '<p class="help-block">' . $message . '</p>';
                     unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'][$inputName]);
+                    break;
                 }
             }
         }
