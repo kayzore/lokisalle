@@ -15,5 +15,47 @@
 {% endblock js %}
 
 {% block bodyContent %}
-    {{ dump(produits) }}
+    <div class="col-xs-12 col-sm-3">
+        {{ front.menu('Catégories', 'list-group', true, ['Toutes','Réunion', 'Bureau', 'Formation'], '', 'categories') }}
+        {{ front.menu('Ville', 'list-group', true, ['Toutes','Paris', 'Lyon', 'Marseille'], '', 'villes') }}
+
+        {% set nbCapacite = [''] %}
+        {% for i in range(0, capacite[0].max_capacite - 1) %}
+            {% set nbCapacite = nbCapacite|merge(['< ' ~ loop.index]) %}
+        {% endfor %}
+        {{ front.menu('Capacité', 'select', true, nbCapacite) }}
+        {{ front.menu('Prix', 'list-group', true, ['Tous', '< 500 €', '< 1 000 €', '< 1 500 €', '< 2 000 €', '< 2 500 €', '< 3 000 €'], '', 'prix') }}
+        {{ front.menu('Période', 'datepicker', true, [], 'Date d\'arrivée') }}
+        {{ front.menu('Période', 'datepicker', false, [], 'Date de départ') }}
+        <br>
+        <p class="text-center"><em id="nbProduit"> résultats</em></p>
+    </div>
+    <div class="col-xs-12 col-sm-9">
+        <div class="row" id="listeProduits">
+            {% for produit in produits %}
+                <div class="col-md-4">
+                    <div class="thumbnail" id="">
+                        <a href="#">
+                            <img src="{{ assets('uploads/' ~ produit.getSalle.getPhoto) }}" alt="{{ produit.getSalle.getTitre }}">
+                        </a>
+                        <div class="caption">
+                            <p>
+                                <a href="#">
+                                    <b>{{ produit.getSalle.getTitre }}</b>
+                                </a>
+                                <span class="pull-right">
+                                    <b>{{ produit.getPrix ~ ' €' }}</b>
+                                </span>
+                            </p>
+                            <p>{{ produit.getSalle.getDescription|truncate(190) }}</p>
+                            <p>
+                                <i class="fa fa-calendar" aria-hidden="true"></i> {{ produit.getDateArrivee|date('d/m/Y') ~ ' au ' ~ produit.getDateDepart|date('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {{ dump(produits.0.getSalle.getPhoto) }}
 {% endblock bodyContent %}
