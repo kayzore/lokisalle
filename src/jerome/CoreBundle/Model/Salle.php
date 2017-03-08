@@ -2,6 +2,8 @@
 namespace jerome\CoreBundle\Model;
 
 
+use kayzore\bundle\KBundle\Cnx;
+
 class Salle
 {
     /**
@@ -83,10 +85,13 @@ class Salle
 
     /**
      * @param int $id_salle
+     * @return $this
      */
     public function setIdSalle($id_salle)
     {
         $this->id_salle = $id_salle;
+
+        return $this;
     }
 
     /**
@@ -99,10 +104,13 @@ class Salle
 
     /**
      * @param string $titre
+     * @return $this
      */
     public function setTitre($titre)
     {
         $this->titre = $titre;
+
+        return $this;
     }
 
     /**
@@ -115,10 +123,13 @@ class Salle
 
     /**
      * @param string $description
+     * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -131,10 +142,13 @@ class Salle
 
     /**
      * @param string $photo
+     * @return $this
      */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
+
+        return $this;
     }
 
     /**
@@ -147,10 +161,13 @@ class Salle
 
     /**
      * @param string $pays
+     * @return $this
      */
     public function setPays($pays)
     {
         $this->pays = $pays;
+
+        return $this;
     }
 
     /**
@@ -163,10 +180,13 @@ class Salle
 
     /**
      * @param string $ville
+     * @return $this
      */
     public function setVille($ville)
     {
         $this->ville = $ville;
+
+        return $this;
     }
 
     /**
@@ -179,10 +199,13 @@ class Salle
 
     /**
      * @param string $adresse
+     * @return $this
      */
     public function setAdresse($adresse)
     {
         $this->adresse = $adresse;
+
+        return $this;
     }
 
     /**
@@ -195,10 +218,13 @@ class Salle
 
     /**
      * @param int $cp
+     * @return $this
      */
     public function setCp($cp)
     {
         $this->cp = $cp;
+
+        return $this;
     }
 
     /**
@@ -211,10 +237,13 @@ class Salle
 
     /**
      * @param int $capacite
+     * @return $this
      */
     public function setCapacite($capacite)
     {
         $this->capacite = $capacite;
+
+        return $this;
     }
 
     /**
@@ -227,10 +256,13 @@ class Salle
 
     /**
      * @param string $categorie
+     * @return $this
      */
     public function setCategorie($categorie)
     {
         $this->categorie = $categorie;
+
+        return $this;
     }
 
     /**
@@ -239,5 +271,32 @@ class Salle
     public static function getListeCategories()
     {
         return self::$liste_categories;
+    }
+
+    /**
+     * Récupère et retourne la liste de toute les salles au format objet
+     * @return array
+     */
+    public static function fetchAll()
+    {
+        $stmt = Cnx::getInstance()->query('SELECT * FROM salle');
+        $salles = [];
+
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $salle) {
+            $salles[] = new self(array(
+                'id_salle'      => $salle['id_salle'],
+                'titre'         => $salle['titre'],
+                'description'   => $salle['description'],
+                'photo'         => $salle['photo'],
+                'pays'          => $salle['pays'],
+                'ville'         => $salle['ville'],
+                'adresse'       => $salle['adresse'],
+                'cp'            => $salle['cp'],
+                'capacite'      => $salle['capacite'],
+                'categorie'     => $salle['categorie']
+            ));
+        }
+
+        return $salles;
     }
 }
