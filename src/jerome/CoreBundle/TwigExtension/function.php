@@ -49,3 +49,8 @@ $get_champ_value = new Twig_SimpleFunction('getChampValue', function ($champ, $s
 });
 $this->twig->addFunction($get_champ_value);
 
+$get_flash_message = new Twig_SimpleFunction('getFlashMessage', function () {
+    \kayzore\bundle\Utils\FlashMessage::display();
+});
+$this->twig->addFunction($get_flash_message);
+
