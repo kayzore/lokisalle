@@ -50,9 +50,9 @@ class FlashMessage
     public static function displayChampValue($inputName)
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
-            foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'] as $champ => $message) {
+            foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'] as $champ => $champValue) {
                 if ($champ == $inputName) {
-                    echo $message;
+                    echo $champValue;
                     break;
                 }
             }
