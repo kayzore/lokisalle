@@ -5,6 +5,7 @@ namespace jerome\CoreBundle\Model;
 use kayzore\bundle\KBundle\Cnx;
 use kayzore\bundle\KBundle\KFramework;
 use kayzore\bundle\KBundle\Membre as MembreInterface;
+use PDO;
 
 class Membre implements MembreInterface
 {
@@ -185,6 +186,13 @@ class Membre implements MembreInterface
      */
     public function setCivilite($civilite)
     {
+        if (is_int($civilite)) {
+            if ($this->getCivilite() == '0') {
+                $civilite = 'm';
+            } else {
+                $civilite = 'f';
+            }
+        }
         $this->civilite = $civilite;
 
         return $this;
@@ -345,9 +353,14 @@ class Membre implements MembreInterface
             . 'nom, prenom, email, pseudo, mdp, civilite, date_enregistrement) '
             . 'VALUES(:nom, :prenom, :email, :pseudo, :mdp, :civilite, NOW())'
         ;
-        $pdo->exec($query);
-        $this->setId($pdo->lastInsertId());
-        $this->setStatut(0);
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR);
+        $stmt->bindParam(':prenom', $this->prenom, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+        $stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+        $stmt->bindValue(':mdp', md5($this->password), PDO::PARAM_STR);
+        $stmt->bindParam(':civilite', $this->civilite, PDO::PARAM_STR);
+        $stmt->execute();
     }
 
     /**

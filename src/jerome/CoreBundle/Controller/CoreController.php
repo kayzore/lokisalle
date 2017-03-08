@@ -32,6 +32,7 @@ class CoreController extends Controller
                 ->setPrenom($_POST['prenomInput'])
                 ->setEmail($_POST['emailInput'])
                 ->setCivilite($_POST['civiliteSelect'])
+                ->setPassword($_POST['passwordInput'])
             ;
 
             if (!Membre::validatePseudo($_POST['pseudoInput'], $msg)) {
