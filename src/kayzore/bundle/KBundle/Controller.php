@@ -63,7 +63,7 @@ class Controller
         foreach ($_SESSION['ls_list_routes'] as $key => $route) {
             if ($key == $name) {
                 if ($route->path == '') {
-                    $path = '/';
+                    $path = \kayzore\bundle\KBundle\kFramework::getProjectSubFolder() . '/';
                 } else {
                     $path = $route->path;
                 }
