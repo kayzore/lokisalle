@@ -47,13 +47,18 @@ class FlashMessage
         }
     }
 
-    public static function displayChampValue($inputName)
+    public static function displayChampValue($inputName, $select, $optionSelect)
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
             foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']['champValue'] as $champ => $champValue) {
                 if ($champ == $inputName) {
-                    echo $champValue;
-                    break;
+                    if ($select && $optionSelect == $champValue) {
+                        echo 'selected="selected"';
+                        break;
+                    } elseif (!$select) {
+                        echo $champValue;
+                        break;
+                    }
                 }
             }
         }
