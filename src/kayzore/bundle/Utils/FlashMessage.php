@@ -6,12 +6,15 @@ use kayzore\bundle\KBundle\KFramework;
 
 class FlashMessage
 {
-    public static function set($message, $type = 'success')
+    public static function set($message, $type = 'success', array $errors = null)
     {
         $_SESSION[kFramework::getProjectAlias() . '_flashMessage'] = [
             'message' => $message,
             'type' => $type,
         ];
+        if (!is_null($errors)) {
+            $_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] = $errors;
+        }
     }
 
     public static function display()
@@ -29,6 +32,28 @@ class FlashMessage
 
             // suppression du msg de la session pour affichage "one shot"
             unset($_SESSION[kFramework::getProjectAlias() . '_flashMessage']);
+        }
+    }
+
+    public static function displayFormClassError($inputName)
+    {
+        if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
+            foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
+                if ($champ == $inputName) {
+                    echo 'has-error';
+                }
+            }
+        }
+    }
+
+    public static function displayFormMessageError($inputName)
+    {
+        if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
+            foreach ($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'] as $champ => $message) {
+                if ($champ == $inputName) {
+                    echo $message;
+                }
+            }
         }
     }
 }
