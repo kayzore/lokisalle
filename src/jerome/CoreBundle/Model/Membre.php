@@ -262,6 +262,29 @@ class Membre implements MembreInterface
     }
 
     /**
+     * Tente de connecter un utilisateur et retourne soit un membre soit null
+     * @return bool
+     */
+    public function connexion()
+    {
+        if (is_null($_SESSION[kFramework::getProjectAlias() . '_utilisateur'])) {
+            $stmt = Cnx::getInstance()->prepare('SELECT *, count(id_membre) as nb_membre FROM membre WHERE pseudo = :pseudo AND mdp = :mdp');
+            $stmt->bindParam('pseudo', $this->pseudo, PDO::PARAM_STR);
+            $stmt->bindValue('mdp', md5($this->password), PDO::PARAM_STR);
+            $stmt->execute();
+            $membre = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($membre['nb_membre'] == '1') {
+                unset($membre['mdp']);
+                unset($membre['nb_membre']);
+                $_SESSION[kFramework::getProjectAlias() . '_utilisateur'] = $membre;
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Effectue les validations du pseudo
      * @param string $pseudo
      * @param string $msg
@@ -382,26 +405,15 @@ class Membre implements MembreInterface
     }
 
     /**
-     * Tente de connecter un utilisateur et retourne soit un membre soit null
+     * Check si un membre est connecté
      * @return bool
      */
-    public function connexion()
+    public static function isConnected()
     {
-        if (is_null($_SESSION[kFramework::getProjectAlias() . '_utilisateur'])) {
-            $stmt = Cnx::getInstance()->prepare('SELECT *, count(id_membre) as nb_membre FROM membre WHERE pseudo = :pseudo AND mdp = :mdp');
-            $stmt->bindParam('pseudo', $this->pseudo, PDO::PARAM_STR);
-            $stmt->bindValue('mdp', md5($this->password), PDO::PARAM_STR);
-            $stmt->execute();
-            $membre = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($membre['nb_membre'] == '1') {
-                unset($membre['mdp']);
-                unset($membre['nb_membre']);
-                $_SESSION[kFramework::getProjectAlias() . '_utilisateur'] = $membre;
-                return true;
-            }
-            return false;
+        if (isset($_SESSION[kFramework::getProjectAlias() . '_utilisateur']) && !empty($_SESSION[kFramework::getProjectAlias() . '_utilisateur'])) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

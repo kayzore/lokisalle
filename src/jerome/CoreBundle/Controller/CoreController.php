@@ -69,6 +69,9 @@ class CoreController extends Controller
 
     public function connexionAction()
     {
+        if (Membre::isConnected()) {
+            $this->redirect('public.ls_homepage');
+        }
         // Connexion
         echo $this->twig->render('front/connexion.html.twig');
     }
@@ -93,9 +96,7 @@ class CoreController extends Controller
             }
 
             if (empty($errors)) {
-                if ($membre->connexion()) {
-                    FlashMessage::set('Connexion effectuée<br><a href="../../' . $this->getUrl('public.ls_homepage') . '">Cliquez-ici pour accéder au catalogue</a>');
-                } else {
+                if (!$membre->connexion()) {
                     FlashMessage::set('Erreur lors de la connexion, vérifier vos identifiants', 'error');
                 }
             } else {
