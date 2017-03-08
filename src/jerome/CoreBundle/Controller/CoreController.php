@@ -76,6 +76,34 @@ class CoreController extends Controller
     public function executeConnexionAction()
     {
         // Execute Connexion
+        $membre = new Membre();
+        $errors = [];
+        if (!empty($_POST)) {
+            $membre
+                ->setPseudo($_POST['pseudoInput'])
+                ->setPassword($_POST['passwordInput'])
+            ;
+
+            if (!Membre::validatePseudo($_POST['pseudoInput'], $msg, true)) {
+                $errors['pseudoInput'] = $msg;
+            }
+
+            if (!Membre::validatePassword($_POST['passwordInput'], $msg, true)) {
+                $errors['passwordInput'] = $msg;
+            }
+
+            if (empty($errors)) {
+                if ($membre->connexion()) {
+                    FlashMessage::set('Connexion effectuée<br><a href="' . $this->getUrl('public.ls_homepage') . '">Cliquez-ici pour accéder au catalogue</a>');
+                } else {
+                    FlashMessage::set('Erreur lors de la connexion, vérifier vos identifiants', 'error');
+                }
+            } else {
+                $errors['champValue'] = $_POST;
+                FlashMessage::set('Le formulaire contient des erreurs', 'error', $errors);
+            }
+            $this->redirect('public.ls_connexion');
+        }
     }
 
     public function deconnexionAction()

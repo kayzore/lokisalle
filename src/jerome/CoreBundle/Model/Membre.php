@@ -216,26 +216,75 @@ class Membre implements MembreInterface
     }
 
     /**
+     *  Fonction qui gère l'insertion ou la modification d'un membre
+     */
+    public function save()
+    {
+        if (!empty($this->id)) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
+    }
+
+    /**
+     * Insert un nouveau membre dans la BDD
+     */
+    private function insert()
+    {
+        $pdo = Cnx::getInstance();
+        $query = 'INSERT INTO membre ('
+            . 'nom, prenom, email, pseudo, mdp, civilite, date_enregistrement) '
+            . 'VALUES(:nom, :prenom, :email, :pseudo, :mdp, :civilite, NOW())'
+        ;
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR);
+        $stmt->bindParam(':prenom', $this->prenom, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+        $stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+        $stmt->bindValue(':mdp', md5($this->password), PDO::PARAM_STR);
+        $stmt->bindParam(':civilite', $this->civilite, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    /**
+     * Met à jour un membre dans la BDD
+     */
+    private function update()
+    {
+        $pdo = Cnx::getInstance();
+        $query = 'UPDATE membre SET '
+            . 'nom = :nom, prenom = :prenom, email = :email, pseudo = :pseudo'
+            . (!empty($this->password) ? ', mdp = :mdp' : '') . ', civilite = :civilite, statut = :statut'
+            . ' WHERE id_membre = ' . $this->id;
+
+        $pdo->exec($query);
+    }
+
+    /**
      * Effectue les validations du pseudo
      * @param string $pseudo
      * @param string $msg
+     * @param bool $connexion
      * @return bool
      */
-    public static function validatePseudo($pseudo, &$msg)
+    public static function validatePseudo($pseudo, &$msg, $connexion = false)
     {
         if (empty($pseudo)) {
             $msg = 'Le pseudo est obligatoire.';
             return false;
-        } elseif (!preg_match('/^[[:alnum:]_-]{6,20}$/', $pseudo)) {
-            $msg = 'Le pseudo doit faire entre 6 et 20 caractères et ne contenir que des lettres, des chiffres, _ ou -.';
-            return false;
-        } else {
-            $pdo = Cnx::getInstance();
-            $stmt = $pdo->query('SELECT COUNT(*) FROM membre WHERE pseudo = ' . $pdo->quote($pseudo));
-
-            if ($stmt->fetchColumn() != 0) {
-                $msg = 'Ce pseudo éxiste déjà.';
+        } elseif (!$connexion) {
+            if (!preg_match('/^[[:alnum:]_-]{6,20}$/', $pseudo)) {
+                $msg = 'Le pseudo doit faire entre 6 et 20 caractères et ne contenir que des lettres, des chiffres, _ ou -.';
                 return false;
+            } else {
+                $pdo = Cnx::getInstance();
+                $stmt = $pdo->query('SELECT COUNT(*) FROM membre WHERE pseudo = ' . $pdo->quote($pseudo));
+
+                if ($stmt->fetchColumn() != 0) {
+                    $msg = 'Ce pseudo éxiste déjà.';
+                    return false;
+                }
             }
         }
 
@@ -314,98 +363,45 @@ class Membre implements MembreInterface
      * Effectue les validations du mot de passe
      * @param string $password
      * @param string $msg
+     * @param bool $connexion
      * @return bool
      */
-    public static function validatePassword($password, &$msg)
+    public static function validatePassword($password, &$msg, $connexion = false)
     {
         if (empty($password)) {
             $msg = "Le mot de passe est obligatoire.";
             return false;
-        } elseif (strlen($password) < 6 || strlen($password) > 60) {
-            $msg = "Le mot de passe doit être supérieure à 6 caractères et inférieure à 60";
-            return false;
+        } elseif (!$connexion) {
+            if (strlen($password) < 6 || strlen($password) > 60) {
+                $msg = "Le mot de passe doit être supérieure à 6 caractères et inférieure à 60";
+                return false;
+            }
         }
 
         return true;
     }
 
     /**
-     *  Fonction qui gère l'insertion ou la modification d'un membre
-     */
-    public function save()
-    {
-        if (!empty($this->id)) {
-            $this->update();
-        } else {
-            $this->insert();
-        }
-    }
-
-    /**
-     * Insert un nouveau membre dans la BDD
-     */
-    private function insert()
-    {
-        $pdo = Cnx::getInstance();
-        $query = 'INSERT INTO membre ('
-            . 'nom, prenom, email, pseudo, mdp, civilite, date_enregistrement) '
-            . 'VALUES(:nom, :prenom, :email, :pseudo, :mdp, :civilite, NOW())'
-        ;
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR);
-        $stmt->bindParam(':prenom', $this->prenom, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
-        $stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
-        $stmt->bindValue(':mdp', md5($this->password), PDO::PARAM_STR);
-        $stmt->bindParam(':civilite', $this->civilite, PDO::PARAM_STR);
-        $stmt->execute();
-    }
-
-    /**
-     * Met à jour un membre dans la BDD
-     */
-    private function update()
-    {
-        $pdo = Cnx::getInstance();
-        $query = 'UPDATE membre SET '
-            . 'nom = :nom, prenom = :prenom, email = :email, pseudo = :pseudo'
-            . (!empty($this->password) ? ', mdp = :mdp' : '') . ', civilite = :civilite, statut = :statut'
-            . ' WHERE id_membre = ' . $this->id;
-
-        $pdo->exec($query);
-    }
-
-    /**
      * Tente de connecter un utilisateur et retourne soit un membre soit null
-     * @param $pseudo
-     * @param $password
-     * @return Membre|null
+     * @return bool
      */
-    public static function connexion($pseudo, $password)
+    public function connexion()
     {
         if (is_null($_SESSION[kFramework::getProjectAlias() . '_utilisateur'])) {
             $stmt = Cnx::getInstance()->prepare('SELECT *, count(id_membre) as nb_membre FROM membre WHERE pseudo = :pseudo AND mdp = :mdp');
-            $stmt->bindParam('pseudo', $pseudo, \PDO::PARAM_STR);
-            $stmt->bindValue('mdp', md5($password), \PDO::PARAM_STR);
+            $stmt->bindParam('pseudo', $this->pseudo, PDO::PARAM_STR);
+            $stmt->bindValue('mdp', md5($this->password), PDO::PARAM_STR);
             $stmt->execute();
-            $membre = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $membre = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($membre['nb_membre'] == '1') {
                 unset($membre['mdp']);
                 unset($membre['nb_membre']);
                 $_SESSION[kFramework::getProjectAlias() . '_utilisateur'] = $membre;
-                return new self(array(
-                    'id'        => $membre['id_membre'],
-                    'pseudo'    => $membre['pseudo'],
-                    'nom'       => $membre['nom'],
-                    'prenom'    => $membre['prenom'],
-                    'email'     => $membre['email'],
-                    'civilite'  => $membre['civilite'],
-                    'statut'    => $membre['statut']
-                ));
+                return true;
             }
-            return null;
+            return false;
         }
-        return $_SESSION[kFramework::getProjectAlias() . '_utilisateur'];
+        return true;
     }
 
     /**
