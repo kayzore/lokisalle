@@ -23,7 +23,6 @@ class CoreController extends Controller
 
     public function executeInscriptionAction()
     {
-        // Execute Inscription
         $membre = new Membre();
         $errors = [];
         if (!empty($_POST)) {
@@ -36,23 +35,23 @@ class CoreController extends Controller
             ;
 
             if (!Membre::validatePseudo($_POST['pseudoInput'], $msg)) {
-                $errors['pseudoInput'] = $msg;
+                $errors['pseudoInput'] = [$msg, $_POST['pseudoInput']];
             }
 
             if (!Membre::validateNom($_POST['nomInput'], $msg)) {
-                $errors['nomInput'] = $msg;
+                $errors['nomInput'] = [$msg, $_POST['nomInput']];
             }
 
             if (!Membre::validatePrenom($_POST['prenomInput'], $msg)) {
-                $errors['prenomInput'] = $msg;
+                $errors['prenomInput'] = [$msg, $_POST['prenomInput']];
             }
 
             if (!Membre::validateEmail($_POST['emailInput'], $msg)) {
-                $errors['emailInput'] = $msg;
+                $errors['emailInput'] = [$msg, $_POST['emailInput']];
             }
 
             if (!Membre::validatePassword($_POST['passwordInput'], $msg)) {
-                $errors['passwordInput'] = $msg;
+                $errors['passwordInput'] = [$msg, $_POST['passwordInput']];
             }
 
             if (empty($errors)) {
@@ -69,7 +68,7 @@ class CoreController extends Controller
     public function connexionAction()
     {
         // Connexion
-        Membre::connexion('johndoe', 'johndoe');
+        echo $this->twig->render('front/connexion.html.twig');
     }
 
     public function executeConnexionAction()
