@@ -44,7 +44,8 @@ $get_label_error = new Twig_SimpleFunction('getLabelError', function ($champ) {
 });
 $this->twig->addFunction($get_label_error);
 
-$get_champ_value = new Twig_SimpleFunction('getChampValue', function ($champ) {
-    \kayzore\bundle\Utils\FlashMessage::displayChampValue($champ);
+$get_champ_value = new Twig_SimpleFunction('getChampValue', function ($champ, $select = null, $optionSelect = null) {
+    \kayzore\bundle\Utils\FlashMessage::displayChampValue($champ, $select, $optionSelect);
 });
 $this->twig->addFunction($get_champ_value);
+

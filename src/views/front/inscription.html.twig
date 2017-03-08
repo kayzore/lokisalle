@@ -49,8 +49,8 @@
                 <div class="form-group {{ getClassError('civiliteSelect') }}">
                     <div class="col-md-6">
                         <select id="civiliteSelect" name="civiliteSelect" class="form-control">
-                            <option value="0" selected="selected">Homme</option>
-                            <option value="1">Femme</option>
+                            <option value="0" {{ getChampValue('civiliteSelect', true, 0) }}>Homme</option>
+                            <option value="1" {{ getChampValue('civiliteSelect', true, 1) }}>Femme</option>
                         </select>
                         {{ getLabelError('civiliteSelect') }}
                     </div>
