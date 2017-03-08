@@ -4,6 +4,7 @@ namespace src\jerome\CoreBundle\Controller;
 
 use jerome\CoreBundle\Model\Membre;
 use kayzore\bundle\KBundle\Controller;
+use kayzore\bundle\Utils\FlashMessage;
 
 class CoreController extends Controller
 {
@@ -54,14 +55,13 @@ class CoreController extends Controller
                 $errors['passwordInput'] = $msg;
             }
 
-
             if (empty($errors)) {
                 $membre->save();
                 FlashMessage::set("Inscription effectuée, vous pouvez maintenant vous connecter");
-
                 $this->redirect('public.ls_connexion');
             } else {
-                FlashMessage::set('Le formulaire contient des erreurs', 'error');
+                FlashMessage::set('Le formulaire contient des erreurs', 'error', $errors);
+                $this->redirect('public.ls_inscription');
             }
         }
     }

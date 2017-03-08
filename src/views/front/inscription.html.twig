@@ -9,9 +9,10 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="text-center">Inscription</h2>
             <form method="post" action="{{ getRoute('public.ls_execute_inscription') }}" class="form-horizontal well">
-                <div class="form-group">
+                <div class="form-group {{ getClassError('pseudoInput') }}">
                     <div class="col-md-6">
                         <input id="pseudoInput" name="pseudoInput" placeholder="Votre pseudo" class="form-control" type="text" value="">
+                        {{ getLabelError('pseudoInput') }}
                     </div>
 
                     <div class="col-md-6">
