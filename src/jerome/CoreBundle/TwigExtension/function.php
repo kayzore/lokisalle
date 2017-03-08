@@ -33,3 +33,8 @@ $get_moyenne = new Twig_SimpleFunction('getMoyenne', function (array $notes) {
     return 0;
 });
 $this->twig->addFunction($get_moyenne);
+
+$get_class_error = new Twig_SimpleFunction('getClassError', function ($champ) {
+    \kayzore\bundle\Utils\FlashMessage::displayFormClassError($champ);
+});
+$this->twig->addFunction($get_class_error);
