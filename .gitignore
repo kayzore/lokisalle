@@ -3,3 +3,4 @@ vendor/
 composer.lock
 web/assets/external/
 web/external/
+web/uploads/
