@@ -39,7 +39,7 @@ $get_class_error = new Twig_SimpleFunction('getClassError', function ($champ) {
 });
 $this->twig->addFunction($get_class_error);
 
-$get_class_error = new Twig_SimpleFunction('getLabelError', function ($champ) {
+$get_label_error = new Twig_SimpleFunction('getLabelError', function ($champ) {
     \kayzore\bundle\Utils\FlashMessage::displayFormMessageError($champ);
 });
-$this->twig->addFunction($get_class_error);
+$this->twig->addFunction($get_label_error);
