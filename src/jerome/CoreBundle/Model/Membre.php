@@ -186,12 +186,10 @@ class Membre implements MembreInterface
      */
     public function setCivilite($civilite)
     {
-        if (is_int($civilite)) {
-            if ($this->getCivilite() == '0') {
-                $civilite = 'm';
-            } else {
-                $civilite = 'f';
-            }
+        if ($civilite == '0') {
+            $civilite = 'm';
+        } elseif ($civilite == '1') {
+            $civilite = 'f';
         }
         $this->civilite = $civilite;
 
