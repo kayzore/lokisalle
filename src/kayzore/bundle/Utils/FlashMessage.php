@@ -6,6 +6,12 @@ use kayzore\bundle\KBundle\KFramework;
 
 class FlashMessage
 {
+    /**
+     * Set un message flash, par défaut de type success
+     * @param string $message
+     * @param string $type
+     * @param array|null $errors
+     */
     public static function set($message, $type = 'success', array $errors = null)
     {
         $_SESSION[kFramework::getProjectAlias() . '_flashMessage'] = [
@@ -17,6 +23,9 @@ class FlashMessage
         }
     }
 
+    /**
+     * Affiche un message flash et l'unset ensuite
+     */
     public static function display()
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage'])) {
@@ -35,6 +44,10 @@ class FlashMessage
         }
     }
 
+    /**
+     * Affiche la class bootstrap error si le champ contient des erreur
+     * @param string $inputName
+     */
     public static function displayFormClassError($inputName)
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
@@ -47,6 +60,12 @@ class FlashMessage
         }
     }
 
+    /**
+     * Affiche la valeur d'un champ input ou d'un select
+     * @param string $inputName
+     * @param bool $select
+     * @param int $optionSelect
+     */
     public static function displayChampValue($inputName, $select, $optionSelect)
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
@@ -64,6 +83,10 @@ class FlashMessage
         }
     }
 
+    /**
+     * Affiche le message d'erreur d'un champ s'il y a des erreurs sur celui-ci
+     * @param string $inputName
+     */
     public static function displayFormMessageError($inputName)
     {
         if (isset($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors']) && !empty($_SESSION[kFramework::getProjectAlias() . '_flashMessage_errors'])) {
