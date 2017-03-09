@@ -175,59 +175,102 @@ class Produit
 
     /**
      * Récupère et retourne la liste de tout les produits au format objet
+     * @param string|null $order_by_colum
+     * @param string $order_by_style
      * @return array
      */
-    public static function fetchAll()
+    public static function fetchAll($order_by_colum = null, $order_by_style = 'ASC')
     {
-        $stmtProduit = Cnx::getInstance()->query('SELECT * FROM produit p JOIN salle s USING(id_salle)');
+        $query = 'SELECT * FROM produit p JOIN salle s USING(id_salle)';
+        if (!is_null($order_by_colum)) {
+            $query .= ' ORDER BY ' . $order_by_colum . ' ' . $order_by_style;
+        }
+        $stmtProduit = Cnx::getInstance()->query($query);
         $produits = [];
         foreach ($stmtProduit->fetchAll(\PDO::FETCH_ASSOC) as $produit) {
             $stmtAvis = Cnx::getInstance()->query('SELECT * FROM avis LEFT JOIN membre USING(id_membre) WHERE id_salle =' . (int)$produit['id_salle']);
             $liste_avis = $stmtAvis->fetchAll(\PDO::FETCH_ASSOC);
-            $avis_objet = [];
-            if (!is_null($liste_avis) && count($liste_avis) > 0) {
-                foreach ($liste_avis as $avis) {
-                    $avis_objet[] = new Avis(array(
-                        'id_avis'               => $avis['id_avis'],
-                        'commentaire'           => $avis['commentaire'],
-                        'note'                  => $avis['note'],
-                        'date_enregistrement'   => $avis['date_enregistrement'],
-                        'membre'                => new Membre(array(
-                            'id'        => $avis['id_membre'],
-                            'pseudo'    => $avis['pseudo'],
-                            'nom'       => $avis['nom'],
-                            'prenom'    => $avis['prenom'],
-                            'email'     => $avis['email'],
-                            'civilite'  => $avis['civilite'],
-                            'statut'    => $avis['statut']
-                        )),
-                        'salle'                 => $avis['id_salle'],
-                    ));
-                }
-            }
-
-            $produits[] = new self(array(
-                'id_produit'    => $produit['id_produit'],
-                'date_arrivee'  => $produit['date_arrivee'],
-                'date_depart'   => $produit['date_depart'],
-                'prix'          => $produit['prix'],
-                'etat'          => $produit['etat'],
-                'salle'         => new Salle(array(
-                    'id_salle'      => $produit['id_salle'],
-                    'titre'         => $produit['titre'],
-                    'description'   => $produit['description'],
-                    'photo'         => $produit['photo'],
-                    'pays'          => $produit['pays'],
-                    'ville'         => $produit['ville'],
-                    'adresse'       => $produit['adresse'],
-                    'cp'            => $produit['cp'],
-                    'capacite'      => $produit['capacite'],
-                    'categorie'     => $produit['categorie'],
-                    'avis'          => $avis_objet
-                ))
-            ));
+            $produits[] = self::createProduit($produit, $liste_avis);
         }
 
         return $produits;
+    }
+
+    /**
+     * Récupère un produit, l'instancie et le retourne
+     * @param int $id_produit
+     * @return Produit
+     */
+    public static function fetch($id_produit)
+    {
+        $stmtProduit = Cnx::getInstance()->query('SELECT * FROM produit p JOIN salle s USING(id_salle) WHERE p.id_produit = ' . (int)$id_produit);
+        $produit = $stmtProduit->fetch(\PDO::FETCH_ASSOC);
+        $stmtAvis = Cnx::getInstance()->query('SELECT * FROM avis LEFT JOIN membre USING(id_membre) WHERE id_salle =' . (int)$produit['id_salle']);
+        $liste_avis = $stmtAvis->fetchAll(\PDO::FETCH_ASSOC);
+        return self::createProduit($produit, $liste_avis);
+    }
+
+    /**
+     * Retourne un tableau contenant une liste d'avis instancié
+     * @param array $liste_avis
+     * @return array
+     */
+    private static function createAvis($liste_avis)
+    {
+        $avis_objet = [];
+        foreach ($liste_avis as $avis) {
+            $avis_objet[] = new Avis(array(
+                'id_avis'               => $avis['id_avis'],
+                'commentaire'           => $avis['commentaire'],
+                'note'                  => $avis['note'],
+                'date_enregistrement'   => $avis['date_enregistrement'],
+                'salle'                 => $avis['id_salle'],
+                'membre'                => new Membre(array(
+                    'id'        => $avis['id_membre'],
+                    'pseudo'    => $avis['pseudo'],
+                    'nom'       => $avis['nom'],
+                    'prenom'    => $avis['prenom'],
+                    'email'     => $avis['email'],
+                    'civilite'  => $avis['civilite'],
+                    'statut'    => $avis['statut']
+                )),
+            ));
+        }
+        return $avis_objet;
+    }
+
+    /**
+     * Instancie et retourne un produit
+     * @param array $produit
+     * @param array $liste_avis
+     * @return Produit
+     */
+    private static function createProduit($produit, $liste_avis)
+    {
+        $avis_objet = [];
+        if (!is_null($liste_avis) && count($liste_avis) > 0) {
+            $avis_objet = self::createAvis($liste_avis);
+        }
+        $produit = new self(array(
+            'id_produit'    => $produit['id_produit'],
+            'date_arrivee'  => $produit['date_arrivee'],
+            'date_depart'   => $produit['date_depart'],
+            'prix'          => $produit['prix'],
+            'etat'          => $produit['etat'],
+            'salle'         => new Salle(array(
+                'id_salle'      => $produit['id_salle'],
+                'titre'         => $produit['titre'],
+                'description'   => $produit['description'],
+                'photo'         => $produit['photo'],
+                'pays'          => $produit['pays'],
+                'ville'         => $produit['ville'],
+                'adresse'       => $produit['adresse'],
+                'cp'            => $produit['cp'],
+                'capacite'      => $produit['capacite'],
+                'categorie'     => $produit['categorie'],
+                'avis'          => $avis_objet
+            ))
+        ));
+        return $produit;
     }
 }
