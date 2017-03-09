@@ -238,19 +238,7 @@ class Produit
             'date_depart'   => $produit['date_depart'],
             'prix'          => $produit['prix'],
             'etat'          => $produit['etat'],
-            'salle'         => new Salle(array(
-                'id_salle'      => $produit['id_salle'],
-                'titre'         => $produit['titre'],
-                'description'   => $produit['description'],
-                'photo'         => $produit['photo'],
-                'pays'          => $produit['pays'],
-                'ville'         => $produit['ville'],
-                'adresse'       => $produit['adresse'],
-                'cp'            => $produit['cp'],
-                'capacite'      => $produit['capacite'],
-                'categorie'     => $produit['categorie'],
-                'avis'          => $avis_objet
-            ))
+            'salle'         => Salle::createSalle(Salle::fetch($produit['salle']->getIdSalle()), $avis_objet),
         ));
         return $produit;
     }
