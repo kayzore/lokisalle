@@ -200,9 +200,7 @@ class Produit
         $stmtProduit = Cnx::getInstance()->query($query);
         $produits = [];
         foreach ($stmtProduit->fetchAll(\PDO::FETCH_ASSOC) as $produit) {
-            $stmtAvis = Cnx::getInstance()->query('SELECT * FROM avis LEFT JOIN membre USING(id_membre) WHERE id_salle =' . (int)$produit['id_salle']);
-            $liste_avis = $stmtAvis->fetchAll(\PDO::FETCH_ASSOC);
-            $produits[] = self::createProduit($produit, $liste_avis);
+            $produits[] = self::createProduit($produit, Avis::fetch(null, null, $produit['id_salle']));
         }
 
         return $produits;
@@ -228,7 +226,7 @@ class Produit
      * @param array $liste_avis
      * @return Produit
      */
-    private static function createProduit($produit, $liste_avis)
+    public static function createProduit($produit, $liste_avis)
     {
         $avis_objet = [];
         if (!is_null($liste_avis) && count($liste_avis) > 0) {

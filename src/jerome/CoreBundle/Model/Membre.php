@@ -435,17 +435,28 @@ class Membre implements MembreInterface
         $membres = [];
 
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $membre) {
-            $membres[] = new self(array(
-                'id'        => $membre['id_membre'],
-                'pseudo'    => $membre['pseudo'],
-                'nom'       => $membre['nom'],
-                'prenom'    => $membre['prenom'],
-                'email'     => $membre['email'],
-                'civilite'  => $membre['civilite'],
-                'statut'    => $membre['statut']
-            ));
+            $membres[] = self::createMembre($membre);
         }
 
         return $membres;
+    }
+
+    /**
+     * Instancie et retourne un membre
+     * @param array $membre
+     * @return Membre
+     */
+    public static function createMembre($membre)
+    {
+        $membre = new self(array(
+            'id'        => $membre['id_membre'],
+            'pseudo'    => $membre['pseudo'],
+            'nom'       => $membre['nom'],
+            'prenom'    => $membre['prenom'],
+            'email'     => $membre['email'],
+            'civilite'  => $membre['civilite'],
+            'statut'    => $membre['statut']
+        ));
+        return $membre;
     }
 }
