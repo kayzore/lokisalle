@@ -179,10 +179,33 @@ class Produit
      */
     public static function fetchAll()
     {
-        $stmt = Cnx::getInstance()->query('SELECT * FROM produit JOIN salle USING(id_salle)');
+        $stmtProduit = Cnx::getInstance()->query('SELECT * FROM produit p JOIN salle s USING(id_salle)');
         $produits = [];
+        foreach ($stmtProduit->fetchAll(\PDO::FETCH_ASSOC) as $produit) {
+            $stmtAvis = Cnx::getInstance()->query('SELECT * FROM avis LEFT JOIN membre USING(id_membre) WHERE id_salle =' . (int)$produit['id_salle']);
+            $liste_avis = $stmtAvis->fetchAll(\PDO::FETCH_ASSOC);
+            $avis_objet = [];
+            if (!is_null($liste_avis) && count($liste_avis) > 0) {
+                foreach ($liste_avis as $avis) {
+                    $avis_objet[] = new Avis(array(
+                        'id_avis'               => $avis['id_avis'],
+                        'commentaire'           => $avis['commentaire'],
+                        'note'                  => $avis['note'],
+                        'date_enregistrement'   => $avis['date_enregistrement'],
+                        'membre'                => new Membre(array(
+                            'id'        => $avis['id_membre'],
+                            'pseudo'    => $avis['pseudo'],
+                            'nom'       => $avis['nom'],
+                            'prenom'    => $avis['prenom'],
+                            'email'     => $avis['email'],
+                            'civilite'  => $avis['civilite'],
+                            'statut'    => $avis['statut']
+                        )),
+                        'salle'                 => $avis['id_salle'],
+                    ));
+                }
+            }
 
-        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $produit) {
             $produits[] = new self(array(
                 'id_produit'    => $produit['id_produit'],
                 'date_arrivee'  => $produit['date_arrivee'],
@@ -199,7 +222,8 @@ class Produit
                     'adresse'       => $produit['adresse'],
                     'cp'            => $produit['cp'],
                     'capacite'      => $produit['capacite'],
-                    'categorie'     => $produit['categorie']
+                    'categorie'     => $produit['categorie'],
+                    'avis'          => $avis_objet
                 ))
             ));
         }

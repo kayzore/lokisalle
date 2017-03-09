@@ -57,6 +57,11 @@ class Salle
     private $categorie;
 
     /**
+     * @var \jerome\CoreBundle\Model\Avis
+     */
+    private $avis;
+
+    /**
      * @var array
      */
     private static $liste_categories = array('Réunion', 'Bureau', 'Formation');
@@ -73,6 +78,7 @@ class Salle
         $this->setCp($salle['cp']);
         $this->setCapacite($salle['capacite']);
         $this->setCategorie($salle['categorie']);
+        $this->setAvis($salle['avis']);
     }
 
     /**
@@ -271,6 +277,25 @@ class Salle
     public static function getListeCategories()
     {
         return self::$liste_categories;
+    }
+
+    /**
+     * @return Avis
+     */
+    public function getAvis()
+    {
+        return $this->avis;
+    }
+
+    /**
+     * @param Avis $avis
+     * @return $this
+     */
+    public function setAvis($avis)
+    {
+        $this->avis = $avis;
+
+        return $this;
     }
 
     /**
