@@ -9,28 +9,17 @@
 
 {% block css %}
     {{ parent() }}
-    <link href="{{ assets('web/assets/css/lightbox.min.css') }}" rel="stylesheet" />
-    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
-    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
-    <script src="{{ assets('web/assets/js/lightbox.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
-    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
-    <script src="{{ assets('web/assets/js/app.js') }}"></script>
-    <script src="{{ assets('web/assets/js/salles.js') }}"></script>
 {% endblock %}
 
 {% block bodyContent %}
     <div id="page-wrapper">
         <div class="container-fluid">
             {{ back.headPage('Gestion des salles', [
-                '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+                '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.ls_homepage') ~ '">Dashboard</a>',
                 '<i class="fa fa-inbox"></i> Gestion des salles'
             ]) }}
             <div class="row">
@@ -63,13 +52,30 @@
                                     </tr>
                                     </thead>
                                     <tbody id="tbodySalles">
-                                        {% for salle in listSalles %}
-                                            {{ back.rowSalles(
-                                            salle.id_salle,salle.titre, salle.description,
-                                            '../web/uploads/' ~ salle.photo, 'Salle de ' ~ salle.categorie,
-                                            salle.pays, salle.ville, salle.adresse, salle.cp,
-                                            salle.capacite, salle.categorie
-                                            ) }}
+                                        {% for salle in liste_salles %}
+                                            <tr>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getIdSalle }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getTitre }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getDescription|truncate(350) }}</td>
+                                                <td style="vertical-align:middle">
+                                                    <a href="{{ assets('uploads/' ~ salle.getPhoto) }}" data-lightbox="salle-{{ salle.getIdSalle }}" data-title="{{ salle.getTitre }}">
+                                                        <img src="{{ assets('uploads/' ~ salle.getPhoto) }}" class="img-responsive center-block imgSalleAdmin" alt="{{ salle.getTitre }}">
+                                                    </a>
+                                                </td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getPays }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getVille }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getAdresse }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getCp }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getCapacite }}</td>
+                                                <td style="vertical-align:middle" class="text-center">{{ salle.getCategorie }}</td>
+                                                <td style="vertical-align:middle" class="text-center">
+                                                    <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                                                        <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                                        <a href="#" class="btnUpdateSalle btn btn-primary" data-id="{{ salle.getIdSalle }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                        <a href="#" class="btnDeleteSalle btn btn-danger" data-id="{{ salle.getIdSalle }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -91,7 +97,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" enctype="multipart/form-data" id="salleForm" method="post"
-                          action="../{{ getRoute('admin.sallesPost') }}" data-type="" data-id="">
+                          action="#" data-type="" data-id="">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
