@@ -1,7 +1,5 @@
 {% extends 'layout.html.twig' %}
 
-{% import "includes/macros/front.html.twig" as front %}
-
 {% block title %}
     Accueil -
 {% endblock title %}
@@ -104,11 +102,28 @@
                             <p>
                                 <i class="fa fa-calendar" aria-hidden="true"></i> {{ produit.getDateArrivee|date('d/m/Y') ~ ' au ' ~ produit.getDateDepart|date('d/m/Y') }}
                             </p>
+                            <p>
+                                {% set liste_notes = [] %}
+                                {% for note in produit.getSalle.getAvis %}
+                                    {% set liste_notes = liste_notes|merge([note.getNote]) %}
+                                {% endfor %}
+                                {% set note = getMoyenne(liste_notes) %}
+                                {% if note > 0 %}
+                                    {{ displayNote(note)|raw|nl2br }}
+                                {% else %}
+                                    0 Avis
+                                {% endif %}
+                                <span class="pull-right">
+                                    <a href="#">
+                                        <i class="fa fa-search" aria-hidden="true"></i> Voir
+                                    </a>
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+        {{ dump(produits.3) }}
     </div>
-    {{ dump(produits.0.getSalle.getPhoto) }}
 {% endblock bodyContent %}

@@ -1,5 +1,5 @@
 <?php
-$note_function = new Twig_SimpleFunction('getNote', function ($note) {
+$display_note_stars = new Twig_SimpleFunction('displayNote', function ($note) {
     $note_increment = 0;
     $note_html = '';
     while ($note_increment != 5) {
@@ -20,13 +20,13 @@ $note_function = new Twig_SimpleFunction('getNote', function ($note) {
     }
     return $note_html;
 });
-$this->twig->addFunction($note_function);
+$this->twig->addFunction($display_note_stars);
 
 $get_moyenne = new Twig_SimpleFunction('getMoyenne', function (array $notes) {
     if (!empty($notes)) {
         $note_tmp = 0;
         foreach ($notes as $note) {
-            $note_tmp += $note['note'];
+            $note_tmp += $note;
         };
         return $note_tmp / count($notes);
     }
