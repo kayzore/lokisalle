@@ -175,15 +175,27 @@ class Produit
 
     /**
      * Récupère et retourne la liste de tout les produits au format objet
+     * @param string $where
      * @param string|null $order_by_colum
      * @param string $order_by_style
+     * @param int $limit
+     * @param string $group_by
      * @return array
      */
-    public static function fetchAll($order_by_colum = null, $order_by_style = 'ASC')
+    public static function fetchAll($where = null, $order_by_colum = null, $order_by_style = 'ASC', $limit = null, $group_by = null)
     {
         $query = 'SELECT * FROM produit p JOIN salle s USING(id_salle)';
+        if (!is_null($where)) {
+            $query .= ' ' . $where;
+        }
+        if (!is_null($group_by)) {
+            $query .= ' GROUP BY ' . $group_by;
+        }
         if (!is_null($order_by_colum)) {
             $query .= ' ORDER BY ' . $order_by_colum . ' ' . $order_by_style;
+        }
+        if (!is_null($limit)) {
+            $query .= ' LIMIT ' . $limit;
         }
         $stmtProduit = Cnx::getInstance()->query($query);
         $produits = [];
