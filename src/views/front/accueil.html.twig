@@ -8,25 +8,78 @@
 
 {% block css %}
     {{ parent() }}
+    <link href="{{ assets('assets/external/libs/jquery-ui/themes/smoothness/jquery-ui.min.css') }}" rel="stylesheet">
 {% endblock css %}
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ assets('assets/external/libs/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script>
+        $( function() {
+            $( "#slider-range" ).slider({
+                range: true,
+                min: 0,
+                max: 5000,
+                values: [ 0, 5000 ],
+                slide: function( event, ui ) {
+                    $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                }
+            });
+            $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+                " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+        } );
+    </script>
 {% endblock js %}
 
 {% block bodyContent %}
     <div class="col-xs-12 col-sm-3">
-        {{ front.menu('Catégories', 'list-group', true, ['Toutes','Réunion', 'Bureau', 'Formation'], '', 'categories') }}
-        {{ front.menu('Ville', 'list-group', true, ['Toutes','Paris', 'Lyon', 'Marseille'], '', 'villes') }}
+        <h4><b>Catégories</b></h4>
+        <div class="list-group">
+            <a href="#" class="list-group-item categories list-group-search active" data-filter="Toutes">Toutes</a>
+            <a href="#" class="list-group-item categories list-group-search" data-filter="Réunion">Réunion</a>
+            <a href="#" class="list-group-item categories list-group-search" data-filter="Bureau">Bureau</a>
+            <a href="#" class="list-group-item categories list-group-search" data-filter="Formation">Formation</a>
+        </div>
+
+        <h4><b>Villes</b></h4>
+        <div class="list-group">
+            <a href="#" class="list-group-item villes list-group-search active" data-filter="Toutes">Toutes</a>
+            <a href="#" class="list-group-item villes list-group-search" data-filter="Paris">Paris</a>
+            <a href="#" class="list-group-item villes list-group-search" data-filter="Lyon">Lyon</a>
+            <a href="#" class="list-group-item villes list-group-search" data-filter="Marseille">Marseille</a>
+        </div>
 
         {% set nbCapacite = [''] %}
+        {% set listReplace = {'é': 'e', 'è': 'e', 'à': '&', 'ç': 'c', '<': '', '>': '', ' ': '', '€': ''} %}
         {% for i in range(0, capacite[0].max_capacite - 1) %}
             {% set nbCapacite = nbCapacite|merge(['< ' ~ loop.index]) %}
         {% endfor %}
-        {{ front.menu('Capacité', 'select', true, nbCapacite) }}
-        {{ front.menu('Prix', 'list-group', true, ['Tous', '< 500 €', '< 1 000 €', '< 1 500 €', '< 2 000 €', '< 2 500 €', '< 3 000 €'], '', 'prix') }}
-        {{ front.menu('Période', 'datepicker', true, [], 'Date d\'arrivée') }}
-        {{ front.menu('Période', 'datepicker', false, [], 'Date de départ') }}
+        <h4><b>Capacité</b></h4>
+        <select class="form-control select-search">
+            {% for element in nbCapacite %}
+                <option value="{{ element|replace(listReplace) }}">{{ element }}</option>
+            {% endfor %}
+        </select>
+
+        <h4><b>Prix</b></h4>
+        <p>
+            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+
+        <div id="slider-range"></div>
+
+        <h4>Période</h4>
+        <h5>Date d'arrivée</h5>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            <input id="prependedtext" name="prependedtext" class="form-control input-search datetimepicker" type="text">
+        </div>
+
+        <h5>Date de départ</h5>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            <input id="prependedtext" name="prependedtext" class="form-control input-search datetimepicker" type="text">
+        </div>
         <br>
         <p class="text-center"><em id="nbProduit"> résultats</em></p>
     </div>
