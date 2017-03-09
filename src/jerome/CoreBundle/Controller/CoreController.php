@@ -121,4 +121,10 @@ class CoreController extends Controller
             'autres_produits'   => Produit::fetchAll('WHERE NOT id_produit = ' . (int)$id_produit, 'id_produit', 'DESC', 4, 'p.id_produit')
         ));
     }
+
+    public function adminHomeAction()
+    {
+        echo $this->twig->render('back/accueil.html.twig', array(
+        ));
+    }
 }

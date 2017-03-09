@@ -30,10 +30,10 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ user.prenom }} {{ user.nom }} <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li>
-                <a href="{{ app.racineWeb }}{{ getRoute('public.profil') }}"><i class="fa fa-fw fa-user"></i> Profil</a>
+                <a href="#"><i class="fa fa-fw fa-user"></i> Profil</a>
             </li>
             <li>
-                <a href="{{ app.racineWeb }}{{ getRoute('public.deconnexion') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a>
+                <a href="{{ app.racineWeb ~ getRoute('public.ls_deconnexion') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a>
             </li>
         </ul>
     </li>
