@@ -4,3 +4,4 @@ composer.lock
 web/assets/external/
 web/external/
 web/uploads/
+app/config/parameters.yml
