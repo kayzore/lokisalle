@@ -54,7 +54,6 @@ class Membre implements MembreInterface
         $this->setPrenom($membre['prenom']);
         $this->setEmail($membre['email']);
         $this->setCivilite($membre['civilite']);
-        $this->setId($membre['id']);
         $this->setStatut($membre['statut']);
     }
 
