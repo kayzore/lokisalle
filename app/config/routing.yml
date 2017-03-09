@@ -33,3 +33,9 @@ public.ls_deconnexion:
     type: get
     controller: 'CoreController'
     methode: 'deconnexion'
+
+public.ls_voir_produit:
+    route: '/produit-:idProduit'
+    type: get
+    controller: 'CoreController'
+    methode: 'voirProduit'

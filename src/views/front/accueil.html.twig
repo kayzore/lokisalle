@@ -86,12 +86,14 @@
             {% for produit in produits %}
                 <div class="col-md-4">
                     <div class="thumbnail" id="">
-                        <a href="#">
+                        {% set url_produit = getRoute('public.ls_voir_produit', { idProduit: produit.getIdProduit }) %}
+
+                        <a href="{{ url_produit }}">
                             <img src="{{ assets('uploads/' ~ produit.getSalle.getPhoto) }}" alt="{{ produit.getSalle.getTitre }}">
                         </a>
                         <div class="caption">
                             <p>
-                                <a href="#">
+                                <a href="{{ url_produit }}">
                                     <b>{{ produit.getSalle.getTitre }}</b>
                                 </a>
                                 <span class="pull-right">
@@ -114,7 +116,7 @@
                                     0 Avis
                                 {% endif %}
                                 <span class="pull-right">
-                                    <a href="#">
+                                    <a href="{{ url_produit }}">
                                         <i class="fa fa-search" aria-hidden="true"></i> Voir
                                     </a>
                                 </span>

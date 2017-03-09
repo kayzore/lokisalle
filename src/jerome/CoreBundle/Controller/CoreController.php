@@ -11,9 +11,8 @@ class CoreController extends Controller
 {
     public function homeAction()
     {
-
         echo $this->twig->render('front/accueil.html.twig', array(
-            'produits' => Produit::fetchAll()
+            'produits' => Produit::fetchAll('id_produit', 'DESC')
         ));
     }
 
@@ -113,5 +112,13 @@ class CoreController extends Controller
     {
         Membre::deconnexion();
         $this->redirect('public.ls_connexion');
+    }
+
+    public function voirProduitAction($id_produit)
+    {
+        var_dump(Produit::fetch($id_produit));
+        echo $this->twig->render('front/accueil.html.twig', array(
+            'produits' => Produit::fetchAll()
+        ));
     }
 }
