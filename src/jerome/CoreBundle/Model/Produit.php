@@ -238,7 +238,7 @@ class Produit
             'date_depart'   => $produit['date_depart'],
             'prix'          => $produit['prix'],
             'etat'          => $produit['etat'],
-            'salle'         => Salle::createSalle(Salle::fetch($produit['id_salle']), $avis_objet),
+            'salle'         => Salle::createSalle(Salle::fetch($produit['salle']->getIdSalle()), $avis_objet),
         ));
         return $produit;
     }
