@@ -16,7 +16,6 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
-                {{ dump(produit) }}
                 {% set liste_notes = [] %}
                 {% for note in produit.getSalle.getAvis %}
                     {% set liste_notes = liste_notes|merge([note.getNote]) %}
@@ -24,7 +23,7 @@
                 <h2>
                     <b>{{ produit.getSalle.getCategorie }} - {{ produit.getSalle.getTitre }}</b> {{ displayNote(getMoyenne(liste_notes))|raw|nl2br }}
                     <span class="pull-right">
-                    {% if userConnected %}
+                    {% if userIsConnected() %}
                         {% set wordReserved = '' %}
                         {% if panier is defined and panier|length > 0 %}
                             {% for key, produitPanier in panier %}
@@ -106,7 +105,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                {% if userConnected %}
+                {% if userIsConnected() %}
                     <a href="#" data-toggle="modal" data-target="#addComModal">Déposer un commentaire et une note</a>
                 {% else %}
                     <a href="#">Connectez-vous pour déposer un commentaire</a>
