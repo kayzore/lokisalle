@@ -39,3 +39,9 @@ public.ls_voir_produit:
     type: get
     controller: 'CoreController'
     methode: 'voirProduit'
+
+admin.ls_homepage:
+    route: '/administration/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminHome'

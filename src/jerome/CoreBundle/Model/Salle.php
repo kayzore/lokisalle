@@ -324,4 +324,43 @@ class Salle
 
         return $salles;
     }
+
+    /**
+     * Recupère la salle correspondant a un id_salle
+     * @param null|int $id_salle
+     * @return array
+     */
+    public static function fetch($id_salle = null)
+    {
+        $salle = Cnx::getInstance()
+            ->query('SELECT * FROM salle WHERE id_salle =' . (int)$id_salle)
+            ->fetch(\PDO::FETCH_ASSOC)
+        ;
+        return $salle;
+    }
+
+    /**
+     * Instancie et retourne une salle
+     * @param array $salle
+     * @param array $liste_avis
+     * @return Salle
+     */
+    public static function createSalle($salle, $liste_avis)
+    {
+
+        $salle = new self(array(
+            'id_salle'      => $salle['id_salle'],
+            'titre'         => $salle['titre'],
+            'description'   => $salle['description'],
+            'photo'         => $salle['photo'],
+            'pays'          => $salle['pays'],
+            'ville'         => $salle['ville'],
+            'adresse'       => $salle['adresse'],
+            'cp'            => $salle['cp'],
+            'capacite'      => $salle['capacite'],
+            'categorie'     => $salle['categorie'],
+            'avis'          => $liste_avis
+        ));
+        return $salle;
+    }
 }

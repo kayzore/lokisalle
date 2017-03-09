@@ -28,7 +28,7 @@
                 {% if user is defined %}
                     <p class="navbar-text"><i class="fa fa-smile-o" aria-hidden="true"></i> <b>Bonjour {{ user.prenom ~ ' ' ~ user.nom }}</b></p>
                     {% if user.statut == 1 %}
-                        <li><a href="#"><i class="fa fa-lock" aria-hidden="true"></i> Administration</a></li>
+                        <li><a href="{{ getRoute('admin.ls_homepage') }}"><i class="fa fa-lock" aria-hidden="true"></i> Administration</a></li>
                     {% endif %}
                     <li>
                         <a href="#">

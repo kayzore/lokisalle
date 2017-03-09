@@ -435,17 +435,42 @@ class Membre implements MembreInterface
         $membres = [];
 
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $membre) {
-            $membres[] = new self(array(
-                'id'        => $membre['id_membre'],
-                'pseudo'    => $membre['pseudo'],
-                'nom'       => $membre['nom'],
-                'prenom'    => $membre['prenom'],
-                'email'     => $membre['email'],
-                'civilite'  => $membre['civilite'],
-                'statut'    => $membre['statut']
-            ));
+            $membres[] = self::createMembre($membre);
         }
 
         return $membres;
+    }
+
+    /**
+     * Recupère le membre correspondant a un id_membre
+     * @param null|int $id_membre
+     * @return Membre
+     */
+    public static function fetch($id_membre = null)
+    {
+        $membre = Cnx::getInstance()
+            ->query('SELECT * FROM membre WHERE id_membre =' . (int)$id_membre)
+            ->fetch(\PDO::FETCH_ASSOC)
+        ;
+        return self::createMembre($membre);
+    }
+
+    /**
+     * Instancie et retourne un membre
+     * @param array $membre
+     * @return Membre
+     */
+    public static function createMembre($membre)
+    {
+        $membre = new self(array(
+            'id'        => $membre['id_membre'],
+            'pseudo'    => $membre['pseudo'],
+            'nom'       => $membre['nom'],
+            'prenom'    => $membre['prenom'],
+            'email'     => $membre['email'],
+            'civilite'  => $membre['civilite'],
+            'statut'    => $membre['statut']
+        ));
+        return $membre;
     }
 }

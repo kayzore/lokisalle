@@ -1,28 +1,28 @@
 <div class="collapse navbar-collapse navbar-left-collapse">
     <ul class="nav navbar-nav side-nav">
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('public.homepage') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour au site</a>
+            <a href="{{ app.racineWeb ~ getRoute('public.ls_homepage') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour au site</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.home') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+            <a href="{{ app.racineWeb ~ getRoute('admin.ls_homepage') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.gestionSalles') }}"><i class="fa fa-inbox" aria-hidden="true"></i> Gestion des salles</a>
+            <a href="#"><i class="fa fa-inbox" aria-hidden="true"></i> Gestion des salles</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.gestionProduits') }}"><i class="fa fa-object-group" aria-hidden="true"></i> Gestion des produits</a>
+            <a href="#"><i class="fa fa-object-group" aria-hidden="true"></i> Gestion des produits</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.gestionMembres') }}"><i class="fa fa-users" aria-hidden="true"></i> Gestion des membres</a>
+            <a href="#"><i class="fa fa-users" aria-hidden="true"></i> Gestion des membres</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.gestionAvis') }}"><i class="fa fa-commenting" aria-hidden="true"></i> Gestion des avis</a>
+            <a href="#"><i class="fa fa-commenting" aria-hidden="true"></i> Gestion des avis</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.gestionCommandes') }}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Gestion des commandes</a>
+            <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Gestion des commandes</a>
         </li>
         <li>
-            <a href="{{ app.racineWeb }}{{ getRoute('admin.statistiques') }}"><i class="fa fa-area-chart" aria-hidden="true"></i> Statistiques</a>
+            <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i> Statistiques</a>
         </li>
     </ul>
 </div>
