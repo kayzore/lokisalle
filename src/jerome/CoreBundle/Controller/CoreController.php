@@ -137,7 +137,7 @@ class CoreController extends Controller
     public function adminSallesAction()
     {
         echo $this->twig->render('back/salles.html.twig', array(
-            'liste-salles' => Salle::fetchAll()
+            'liste_salles' => Salle::fetchAll()
         ));
     }
 }
