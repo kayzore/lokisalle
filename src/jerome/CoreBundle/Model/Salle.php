@@ -78,7 +78,9 @@ class Salle
         $this->setCp($salle['cp']);
         $this->setCapacite($salle['capacite']);
         $this->setCategorie($salle['categorie']);
-        $this->setAvis($salle['avis']);
+        if (isset($salle['avis'])) {
+            $this->setAvis($salle['avis']);
+        }
     }
 
     /**
