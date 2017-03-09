@@ -223,35 +223,6 @@ class Produit
     }
 
     /**
-     * Retourne un tableau contenant une liste d'avis instancié
-     * @param array $liste_avis
-     * @return array
-     */
-    private static function createAvis($liste_avis)
-    {
-        $avis_objet = [];
-        foreach ($liste_avis as $avis) {
-            $avis_objet[] = new Avis(array(
-                'id_avis'               => $avis['id_avis'],
-                'commentaire'           => $avis['commentaire'],
-                'note'                  => $avis['note'],
-                'date_enregistrement'   => $avis['date_enregistrement'],
-                'salle'                 => $avis['id_salle'],
-                'membre'                => new Membre(array(
-                    'id'        => $avis['id_membre'],
-                    'pseudo'    => $avis['pseudo'],
-                    'nom'       => $avis['nom'],
-                    'prenom'    => $avis['prenom'],
-                    'email'     => $avis['email'],
-                    'civilite'  => $avis['civilite'],
-                    'statut'    => $avis['statut']
-                )),
-            ));
-        }
-        return $avis_objet;
-    }
-
-    /**
      * Instancie et retourne un produit
      * @param array $produit
      * @param array $liste_avis
@@ -261,7 +232,7 @@ class Produit
     {
         $avis_objet = [];
         if (!is_null($liste_avis) && count($liste_avis) > 0) {
-            $avis_objet = self::createAvis($liste_avis);
+            $avis_objet = Avis::createAvis($liste_avis);
         }
         $produit = new self(array(
             'id_produit'    => $produit['id_produit'],
