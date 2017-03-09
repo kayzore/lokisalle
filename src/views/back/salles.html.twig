@@ -9,10 +9,21 @@
 
 {% block css %}
     {{ parent() }}
+    <link href="{{ assets('assets/css/lightbox.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/animate.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ assets('assets/js/lightbox.min.js') }}"></script>
+    <script src="{{ assets('assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('assets/js/admin.js') }}"></script>
+    <script src="{{ assets('assets/js/app.js') }}"></script>
+    <script src="{{ assets('assets/js/salles.js') }}"></script>
 {% endblock %}
 
 {% block bodyContent %}
