@@ -6,6 +6,7 @@ use jerome\CoreBundle\Model\Avis;
 use jerome\CoreBundle\Model\Commande;
 use jerome\CoreBundle\Model\Membre;
 use jerome\CoreBundle\Model\Produit;
+use jerome\CoreBundle\Model\Salle;
 use kayzore\bundle\KBundle\Controller;
 use kayzore\bundle\Utils\FlashMessage;
 
@@ -130,6 +131,13 @@ class CoreController extends Controller
             'nb_avis'       => count(Avis::fetchAll()),
             'nb_membres'    => count(Membre::fetchAll()),
             'nb_commandes'  => count(Commande::fetchAll())
+        ));
+    }
+
+    public function adminSallesAction()
+    {
+        echo $this->twig->render('back/salles.html.twig', array(
+            'liste-salles' => Salle::fetchAll()
         ));
     }
 }

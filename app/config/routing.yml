@@ -45,3 +45,9 @@ admin.ls_homepage:
     type: get
     controller: 'CoreController'
     methode: 'adminHome'
+
+admin.ls_salle:
+    route: '/administration/liste-des-salles/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminSalles'
