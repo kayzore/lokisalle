@@ -2,6 +2,8 @@
 namespace src\jerome\CoreBundle\Controller;
 
 
+use jerome\CoreBundle\Model\Avis;
+use jerome\CoreBundle\Model\Commande;
 use jerome\CoreBundle\Model\Membre;
 use jerome\CoreBundle\Model\Produit;
 use kayzore\bundle\KBundle\Controller;
@@ -125,6 +127,9 @@ class CoreController extends Controller
     public function adminHomeAction()
     {
         echo $this->twig->render('back/accueil.html.twig', array(
+            'nb_avis'       => count(Avis::fetchAll()),
+            'nb_membres'    => count(Membre::fetchAll()),
+            'nb_commandes'  => count(Commande::fetchAll())
         ));
     }
 }
