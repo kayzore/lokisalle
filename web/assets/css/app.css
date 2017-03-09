@@ -34,3 +34,6 @@ body {
 .navbar-brand {
     padding-top:10px;
 }
+p.description_produit {
+    height: 120px;
+}

@@ -98,7 +98,7 @@
                                     <b>{{ produit.getPrix ~ ' €' }}</b>
                                 </span>
                             </p>
-                            <p>{{ produit.getSalle.getDescription|truncate(190) }}</p>
+                            <p class="description_produit">{{ produit.getSalle.getDescription|truncate(190) }}</p>
                             <p>
                                 <i class="fa fa-calendar" aria-hidden="true"></i> {{ produit.getDateArrivee|date('d/m/Y') ~ ' au ' ~ produit.getDateDepart|date('d/m/Y') }}
                             </p>
