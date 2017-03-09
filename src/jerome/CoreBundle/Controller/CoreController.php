@@ -12,7 +12,7 @@ class CoreController extends Controller
     public function homeAction()
     {
         echo $this->twig->render('front/accueil.html.twig', array(
-            'produits' => Produit::fetchAll('id_produit', 'DESC')
+            'produits' => Produit::fetchAll(null, 'id_produit', 'DESC')
         ));
     }
 
@@ -116,9 +116,9 @@ class CoreController extends Controller
 
     public function voirProduitAction($id_produit)
     {
-        var_dump(Produit::fetch($id_produit));
-        echo $this->twig->render('front/accueil.html.twig', array(
-            'produits' => Produit::fetchAll()
+        echo $this->twig->render('front/produit.html.twig', array(
+            'produit'           => Produit::fetch($id_produit),
+            'autres_produits'   => Produit::fetchAll('WHERE NOT id_produit = ' . (int)$id_produit, 'id_produit', 'DESC', 4, 'p.id_produit')
         ));
     }
 }

@@ -1,36 +1,28 @@
 {% extends 'layout.html.twig' %}
 
-{% import "includes/macros/forms.html.twig" as form %}
-
 {% block title %}
-    {{ produit.categorie }} {{ produit.titre }} -
+    {{ produit.getSalle.getCategorie }} {{ produit.getSalle.getTitre }} -
 {% endblock title %}
 
 {% block css %}
     {{ parent() }}
-    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
 {% endblock css %}
 
 {% block js %}
     {{ parent() }}
-    <script src="{{ assets('web/assets/js/jsRouting.js') }}"></script>
-    <script src="{{ assets('web/assets/js/form.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
-    <script src="{{ assets('web/assets/js/avis.js') }}"></script>
-    <script src="{{ assets('web/assets/js/produit.js') }}"></script>
 {% endblock js %}
 
 {% block bodyContent %}
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
+                {{ dump(produit) }}
                 {% set liste_notes = [] %}
-                {% for note in notes %}
-                    {% set liste_notes = liste_notes|merge([note]) %}
+                {% for note in produit.getSalle.getAvis %}
+                    {% set liste_notes = liste_notes|merge([note.getNote]) %}
                 {% endfor %}
                 <h2>
-                    <b>{{ produit.categorie }} {{ produit.titre }}</b> {{ getNote(getMoyenne(liste_notes))|raw|nl2br }}
+                    <b>{{ produit.getSalle.getCategorie }} - {{ produit.getSalle.getTitre }}</b> {{ displayNote(getMoyenne(liste_notes))|raw|nl2br }}
                     <span class="pull-right">
                     {% if userConnected %}
                         {% set wordReserved = '' %}
@@ -43,25 +35,23 @@
                         {% endif %}
                         <a href="#" class="btn btn-success {{ wordReserved }}" id="btnAddToCart" data-id="{{ produit.id_produit }}">Ajouter au panier</a>
                     {% else %}
-                        <a href="{{ app.racineWeb }}{{ getRoute('public.connexion') }}" class="btn btn-primary">Connectez-vous pour réserver</a>
+                        <a href="{{ app.racineWeb ~ getRoute('public.ls_connexion') }}" class="btn btn-primary">Connectez-vous pour réserver</a>
                     {% endif %}
                     </span>
                 </h2>
             </div>
         </div>
-
         <hr>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-7">
-                    <img src="../web/uploads/{{ produit.photo }}" class="img-responsive" alt="...">
+                    <img src="{{ assets('uploads/' ~ produit.getSalle.getPhoto) }}" class="img-responsive" alt="...">
                 </div>
                 <div class="col-md-5">
                     <h4><b>Description</b></h4>
-                    <p>{{ produit.description }}</p>
+                    <p>{{ produit.getSalle.getDescription }}</p>
                     <h4><b>Localisation</b></h4>
-                    <span id="adresse" class="is_hidden">{{ produit.adresse ~ ' ' ~ produit.cp ~ ' ' ~ produit.ville }}</span>
+                    <span id="adresse" class="is_hidden">{{ produit.getSalle.getAdresse ~ ' ' ~ produit.getSalle.getCp ~ ' ' ~ produit.getSalle.getVille }}</span>
                     <iframe id="map" allowfullscreen></iframe>
                 </div>
             </div>
@@ -72,26 +62,27 @@
                 <div class="row">
                     <div class="col-md-4">
                         <p>
-                            <i class="fa fa-calendar" aria-hidden="true"></i> <b>Arrivée :</b> {{ produit.date_arrivee|date('d/m/Y H:i:s') }}
+                            <i class="fa fa-calendar" aria-hidden="true"></i> <b>Arrivée :</b> {{ produit.getDateArrivee|date('d/m/Y H:i:s') }}
                             <br>
                             <br>
-                            <i class="fa fa-calendar" aria-hidden="true"></i> <b>Départ :</b> {{ produit.date_depart|date('d/m/Y H:i:s') }}
+                            <i class="fa fa-calendar" aria-hidden="true"></i> <b>Départ :</b> {{ produit.getDateDepart|date('d/m/Y H:i:s') }}
                         </p>
                     </div>
                     <div class="col-md-4">
                         <p>
-                            <i class="fa fa-users" aria-hidden="true"></i> <b>Capacité :</b> {{ produit.capacite }}
+                            <i class="fa fa-users" aria-hidden="true"></i> <b>Capacité :</b> {{ produit.getSalle.getCapacite }}
                             <br>
                             <br>
-                            <i class="fa fa-inbox" aria-hidden="true"></i> <b>Catégorie :</b> {{ produit.categorie }}
+                            <i class="fa fa-inbox" aria-hidden="true"></i> <b>Catégorie :</b> {{ produit.getSalle.getCategorie }}
                         </p>
                     </div>
                     <div class="col-md-4">
                         <p>
-                            <i class="fa fa-map-marker" aria-hidden="true"></i> <b>Adresse :</b> {{ produit.adresse }}, {{ produit.cp }}, {{ produit.ville }}
+                            <i class="fa fa-map-marker" aria-hidden="true"></i> <b>Adresse :</b>
+                            {{ produit.getSalle.getAdresse }}, {{ produit.getSalle.getCp }}, {{ produit.getSalle.getVille }}
                             <br>
                             <br>
-                            <i class="fa fa-eur" aria-hidden="true"></i> <b>Tarif :</b> {{ produit.prix|number_format(2, ',', ' ') }} €
+                            <i class="fa fa-eur" aria-hidden="true"></i> <b>Tarif :</b> {{ produit.getPrix|number_format(2, ',', ' ') }} €
                         </p>
                     </div>
                 </div>
@@ -104,7 +95,9 @@
                 <div class="row">
                     {% for produit in autres_produits %}
                         <div class="col-md-3">
-                            <a href="{{ app.racineWeb }}{{ getRoute('public.produitView', {id: produit.id_produit, slug: produit.categorie|replace({'é': 'e'}) ~ '-' ~ produit.titre|replace({'é': 'e', 'è': 'e', 'à': '&', 'ç': 'c'})}) }}"><img src="../web/uploads/{{ produit.photo }}" class="img-responsive" alt="..."></a>
+                            <a href="{{ getRoute('public.ls_voir_produit', { idProduit: produit.getIdProduit }) }}">
+                                <img src="{{ assets('uploads/' ~ produit.getSalle.getPhoto) }}" class="img-responsive" alt="{{ produit.getSalle.getTitre }}">
+                            </a>
                         </div>
                     {% endfor %}
                 </div>
@@ -116,9 +109,9 @@
                 {% if userConnected %}
                     <a href="#" data-toggle="modal" data-target="#addComModal">Déposer un commentaire et une note</a>
                 {% else %}
-                    <a href="{{ app.racineWeb }}{{ getRoute('public.connexion') }}">Connectez-vous pour déposer un commentaire</a>
+                    <a href="#">Connectez-vous pour déposer un commentaire</a>
                 {% endif %}
-                <span class="pull-right"><a href="{{ app.racineWeb }}{{ getRoute('public.homepage') }}">Retour au catalogue</a></span>
+                <span class="pull-right"><a href="{{ getRoute('public.ls_homepage') }}">Retour au catalogue</a></span>
             </div>
         </div>
     </div>
@@ -135,7 +128,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" action="{{ app.racineWeb }}{{ getRoute('public.addAvis', {idSalle: produit.id_salle}) }}" class="form-horizontal" id="addAvisForm">
+                            <form method="post" action="#" class="form-horizontal" id="addAvisForm">
                                 <div class="form-group">
                                     {{ form.textarea('Commentaire', 'commentaire', 'Votre commentaire sur la salle', 'md-2', 'md-9') }}
                                 </div>
