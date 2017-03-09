@@ -332,10 +332,11 @@ class Salle
      */
     public static function fetch($id_salle = null)
     {
-        return Cnx::getInstance()
+        $salle = Cnx::getInstance()
             ->query('SELECT * FROM salle WHERE id_salle =' . (int)$id_salle)
             ->fetch(\PDO::FETCH_ASSOC)
-            ;
+        ;
+        return $salle;
     }
 
     /**
@@ -346,6 +347,7 @@ class Salle
      */
     public static function createSalle($salle, $liste_avis)
     {
+
         $salle = new self(array(
             'id_salle'      => $salle['id_salle'],
             'titre'         => $salle['titre'],

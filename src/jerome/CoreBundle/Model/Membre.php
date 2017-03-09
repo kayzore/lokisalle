@@ -442,6 +442,20 @@ class Membre implements MembreInterface
     }
 
     /**
+     * Recupère le membre correspondant a un id_membre
+     * @param null|int $id_membre
+     * @return Membre
+     */
+    public static function fetch($id_membre = null)
+    {
+        $membre = Cnx::getInstance()
+            ->query('SELECT * FROM membre WHERE id_membre =' . (int)$id_membre)
+            ->fetch(\PDO::FETCH_ASSOC)
+        ;
+        return self::createMembre($membre);
+    }
+
+    /**
      * Instancie et retourne un membre
      * @param array $membre
      * @return Membre
