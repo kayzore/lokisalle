@@ -6,37 +6,39 @@ class SalleValidator
 {
     /**
      * Valide le post d'une salle
+     * @param array $salle
+     * @param string $photo
      * @return array
      */
-    public static function validatePost()
+    public static function validatePost(array $salle, $photo)
     {
         $errors = [];
-        if (!self::validateTitre($_POST['titreInput'], $msg)) {
-            $errors['titreInput'] = $msg;
+        if (!self::validateTitre($salle['titreInput'], $msg)) {
+            $errors['titreInput'] = [$msg];
         }
-        if (!self::validateDescription($_POST['descriptionTextarea'], $msg)) {
-            $errors['descriptionTextarea'] = $msg;
+        if (!self::validateDescription($salle['descriptionTextarea'], $msg)) {
+            $errors['descriptionTextarea'] = [$msg];
         }
-        if (!self::validatePays($_POST['paysSelect'], $msg)) {
-            $errors['paysSelect'] = $msg;
+        if (!self::validatePays($salle['paysSelect'], $msg)) {
+            $errors['paysSelect'] = [$msg];
         }
-        if (!self::validateVille($_POST['villeSelect'], $msg)) {
-            $errors['villeSelect'] = $msg;
+        if (!self::validateVille($salle['villeSelect'], $msg)) {
+            $errors['villeSelect'] = [$msg];
         }
-        if (!self::validateAdresse($_POST['adresseTextarea'], $msg)) {
-            $errors['adresseTextarea'] = $msg;
+        if (!self::validateAdresse($salle['adresseTextarea'], $msg)) {
+            $errors['adresseTextarea'] = [$msg];
         }
-        if (!self::validateCp($_POST['cpInput'], $msg)) {
-            $errors['cpInput'] = $msg;
+        if (!self::validateCp($salle['cpInput'], $msg)) {
+            $errors['cpInput'] = [$msg];
         }
-        if (!self::validateCapacite($_POST['capaciteSelect'], $msg)) {
-            $errors['capaciteSelect'] = $msg;
+        if (!self::validateCapacite($salle['capaciteSelect'], $msg)) {
+            $errors['capaciteSelect'] = [$msg];
         }
-        if (!self::validateCategorie($_POST['categorieSelect'], $msg)) {
-            $errors['categorieSelect'] = $msg;
+        if (!self::validateCategorie($salle['categorieSelect'], $msg)) {
+            $errors['categorieSelect'] = [$msg];
         }
-        if (!self::validatePhoto($_FILES['photoInput'], $msg)) {
-            $errors['categorieSelect'] = $msg;
+        if (!self::validatePhoto($photo, $msg)) {
+            $errors['photoInput'] = [$msg];
         }
 
         return $errors;
@@ -146,6 +148,7 @@ class SalleValidator
      */
     private static function validateCapacite($capacite, &$msg)
     {
+        var_dump($capacite);
         if (empty($capacite)) {
             $msg = 'La capacite est obligatoire.';
             return false;
