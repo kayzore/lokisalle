@@ -141,6 +141,13 @@ class CoreController extends Controller
         ));
     }
 
+    public function adminSallesAddAction()
+    {
+        if ($this->isXmlHttpRequest()) {
+            echo 'ok';
+        }
+    }
+
     public function adminProduitsAction()
     {
         echo $this->twig->render('back/produits.html.twig', array(
