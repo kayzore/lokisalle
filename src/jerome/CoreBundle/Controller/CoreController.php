@@ -7,6 +7,7 @@ use jerome\CoreBundle\Model\Commande;
 use jerome\CoreBundle\Model\Membre;
 use jerome\CoreBundle\Model\Produit;
 use jerome\CoreBundle\Model\Salle;
+use jerome\CoreBundle\Model\Validation\SalleValidator;
 use kayzore\bundle\KBundle\Controller;
 use kayzore\bundle\Utils\FlashMessage;
 
@@ -144,7 +145,31 @@ class CoreController extends Controller
     public function adminSallesAddAction()
     {
         if ($this->isXmlHttpRequest()) {
-            echo 'ok';
+            $salle = new Salle();
+            if (!empty($_POST)) {
+                $salle
+                    ->setTitre($_POST['titreInput'])
+                    ->setDescription($_POST['descriptionTextarea'])
+                    ->setPays($_POST['paysSelect'])
+                    ->setVille($_POST['villeSelect'])
+                    ->setAdresse($_POST['adresseTextarea'])
+                    ->setCp($_POST['cpInput'])
+                    ->setCapacite($_POST['capaciteSelect'])
+                    ->setCategorie($_POST['categorieSelect'])
+                ;
+
+                $errors = SalleValidator::validatePost($salle->getAllAttributes(), $_FILES['photoInput']);
+
+                if (empty($errors)) {
+                    $salle->save();
+                    FlashMessage::set("Ajout de la nouvelle salle effectuée.");
+                    $result[0] = 'success';
+                } else {
+                    FlashMessage::set('Le formulaire contient des erreurs');
+                }
+                $result[1] = $errors;
+                echo json_encode($result);
+            }
         }
     }
 

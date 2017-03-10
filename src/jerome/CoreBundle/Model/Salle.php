@@ -3,6 +3,8 @@ namespace jerome\CoreBundle\Model;
 
 
 use kayzore\bundle\KBundle\Cnx;
+use kayzore\bundle\KBundle\KFramework;
+use PDO;
 
 class Salle
 {
@@ -274,14 +276,6 @@ class Salle
     }
 
     /**
-     * @return array
-     */
-    public static function getListeCategories()
-    {
-        return self::$liste_categories;
-    }
-
-    /**
      * @return Avis
      */
     public function getAvis()
@@ -298,6 +292,93 @@ class Salle
         $this->avis = $avis;
 
         return $this;
+    }
+
+    public function getAllAttributes()
+    {
+        return array(
+            'titreInput'            => $this->getTitre(),
+            'descriptionTextarea'   => $this->getDescription(),
+            'paysSelect'            => $this->getPays(),
+            'villeSelect'           => $this->getVille(),
+            'adresseTextarea'       => $this->getAdresse(),
+            'cpInput'               => $this->getCp(),
+            'capaciteSelect'        => $this->getCapacite(),
+            'categorieSelect'       => $this->getCategorie(),
+            'photoInput'            => $this->getPhoto()
+        );
+    }
+
+    /**
+     *  Fonction qui gère l'insertion ou la modification d'une salle
+     */
+    public function save()
+    {
+        if (!empty($this->id)) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
+    }
+
+    /**
+     * Insert une nouvelle salle dans la BDD
+     */
+    private function insert()
+    {
+        $this->setPhoto(self::uploadPhoto($_FILES['photoInput']));
+        $pdo = Cnx::getInstance();
+        $query = 'INSERT INTO salle (titre, description, photo, pays, ville, adresse, cp, capacite, categorie) '
+            . 'VALUES(:titre, :description, :photo, :pays, :ville, :adresse, :cp, :capacite, :categorie)'
+        ;
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':titre', $this->getTitre(), PDO::PARAM_STR);
+        $stmt->bindParam(':description', $this->getDescription(), PDO::PARAM_STR);
+        $stmt->bindParam(':photo', $this->getPhoto(), PDO::PARAM_STR);
+        $stmt->bindParam(':pays', $this->getPays(), PDO::PARAM_STR);
+        $stmt->bindParam(':ville', $this->getVille(), PDO::PARAM_STR);
+        $stmt->bindParam(':adresse', $this->getAdresse(), PDO::PARAM_STR);
+        $stmt->bindParam(':cp', $this->getCp(), PDO::PARAM_STR);
+        $stmt->bindParam(':capacite', $this->getCapacite(), PDO::PARAM_STR);
+        $stmt->bindParam(':categorie', $this->getCategorie(), PDO::PARAM_STR);
+        $stmt->execute();
+        $this->setIdSalle($pdo->lastInsertId());
+    }
+
+    /**
+     * Met à jour un membre dans la BDD
+     */
+    private function update()
+    {
+        $pdo = Cnx::getInstance();
+        $query = 'UPDATE membre SET '
+            . 'nom = :nom, prenom = :prenom, email = :email, pseudo = :pseudo'
+            . (!empty($this->password) ? ', mdp = :mdp' : '') . ', civilite = :civilite, statut = :statut'
+            . ' WHERE id_membre = ' . $this->id;
+
+        $pdo->exec($query);
+    }
+
+    /**
+     * Génère le nom et upload la photo
+     * @param $photo
+     * @return string
+     */
+    private static function uploadPhoto($photo)
+    {
+        $extension = substr($photo['name'], strrpos($photo['name'], '.'));
+        $nomPhoto = md5(time()) . $extension;
+        move_uploaded_file($photo['tmp_name'], kFramework::getRacineWeb() . 'web/uploads/' . $nomPhoto);
+        return $nomPhoto;
+    }
+
+    /**
+     * Retourne la liste des catégories
+     * @return array
+     */
+    public static function getListeCategories()
+    {
+        return self::$liste_categories;
     }
 
     /**
