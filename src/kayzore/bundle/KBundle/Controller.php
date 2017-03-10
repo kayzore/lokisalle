@@ -65,7 +65,7 @@ class Controller
                 if ($route->path == '') {
                     $path = '../../' . \kayzore\bundle\KBundle\kFramework::getProjectSubFolder() . '/';
                 } else {
-                    $path = $route->path;
+                    $path = $_SESSION[kFramework::getProjectAlias() . '_viewVar']['racineWeb'] . $route->path;
                 }
                 $path = $this->replaceParams($params, $path);
             }
