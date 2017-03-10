@@ -5,3 +5,4 @@ web/assets/external/
 web/external/
 web/uploads/
 app/config/parameters.yml
+web/assets/routing/
