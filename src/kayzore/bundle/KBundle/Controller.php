@@ -95,7 +95,7 @@ class Controller
      * @param $path string Alias d'une route
      */
     public function redirect($path) {
-        header('location: ' . $_SESSION[kFramework::getProjectAlias() . '_viewVar']['racineWeb'] . $this->getUrl($path));
+        header('location: ' . $this->getUrl($path));
         die;
     }
 
