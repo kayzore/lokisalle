@@ -45,7 +45,28 @@ class RouterController
      *
      */
     private function routes() {
-        $routing = Yaml::parse(file_get_contents(\kayzore\bundle\KBundle\kFramework::getPathConfig() . 'routing.yml'));
+        $path_admin = \kayzore\bundle\KBundle\kFramework::getPathConfig() . 'routing-admin.yml';
+        if (!copy($path_admin, 'assets/routing/routing-admin.yml')) {
+            new ServiceException(500, "La copie $path_admin du fichier a échouée...");
+        }
+        $routing = Yaml::parse(file_get_contents($path_admin));
+        foreach ($routing as $alias => $value) {
+            $methode = $value['methode'] . 'Action';
+            $this
+                ->router
+                ->$value['type'](
+                    $value['route'],
+                    $value['controller'] . '#' . $methode,
+                    $alias
+                )
+            ;
+        }
+
+        $path_public = \kayzore\bundle\KBundle\kFramework::getPathConfig() . 'routing.yml';
+        if (!copy($path_public, 'assets/routing/routing.yml')) {
+            new ServiceException(500, "La copie $path_public du fichier a échouée...");
+        }
+        $routing = Yaml::parse(file_get_contents($path_public));
         foreach ($routing as $alias => $value) {
             $methode = $value['methode'] . 'Action';
             $this

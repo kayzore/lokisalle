@@ -1,0 +1,23 @@
+admin.ls_homepage:
+    route: '/administration/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminHome'
+
+admin.ls_salles:
+    route: '/administration/liste-des-salles/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminSalles'
+
+admin.ls_produits:
+    route: '/administration/liste-des-produits/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminProduits'
+
+admin.ls_membres:
+    route: '/administration/liste-des-membres/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminMembres'

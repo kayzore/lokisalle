@@ -1,33 +1,37 @@
 var jsRouting = function () {
-    var url, getUrl, generate;
+    var liste_routes_admin,
+        liste_routes_public,
+        getUrl,
+        replaceParams;
+
+    $.get('web/assets/routing/routing-admin.yml').done(function (data) {
+        liste_routes_admin = jsyaml.load(data);
+    });
+    $.get('web/assets/routing/routing.yml').done(function (data) {
+        liste_routes_public = jsyaml.load(data);
+    });
 
     /**
-     * Genere une url a partir d'une route et la stock en mémoire
-     * @param route
-     * @param params
+     * Génère une url a partir d'une route et la retourne
      */
-     generate = function (route, params) {
-         $.ajax({
-             async: false,
-             url : '/lokisalle/get-routes/'+route+'/'+params,
-             type : 'GET',
-             dataType : 'html',
-             success : function(returnUrl){
-                url = returnUrl;
-             }
-         });
+    getUrl = function (type, route, params) {
+         if (type === 'admin') {
+             console.log(replaceParams(liste_routes_admin[route].route, params));
+         } else if (type === 'public') {
+             console.log(replaceParams(liste_routes_public[route].route, params));
+         }
      };
 
-    /**
-     * Retourne l'url actuellement stocké en mémoire
-     * @returns {*}
-     */
-    getUrl = function () {
-         return url;
-     };
+    replaceParams = function (path, params) {
+        $.each(params, function (k, param) {
+            console.log(":" + k);
+            console.log(param);
+            path = path.replace(":" + k, param);
+        });
+        return path;
+    };
 
     return {
-        generate: generate,
         getUrl: getUrl
     };
 }();
