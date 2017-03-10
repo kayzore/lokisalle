@@ -443,6 +443,15 @@ class Membre implements MembreInterface
     }
 
     /**
+     * Check si un membre est admin
+     * @return bool
+     */
+    public static function isAdmin()
+    {
+        return ($_SESSION[kFramework::getProjectAlias() . '_utilisateur']['statut'] == 0 ? true : false);
+    }
+
+    /**
      * Deconnecte un utilisateur s'il est déjà connecté
      */
     public static function deconnexion()
