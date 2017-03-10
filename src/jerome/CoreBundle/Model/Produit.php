@@ -215,7 +215,7 @@ class Produit
     {
         $stmtProduit = Cnx::getInstance()->query('SELECT * FROM produit p JOIN salle s USING(id_salle) WHERE p.id_produit = ' . (int)$id_produit);
         $produit = $stmtProduit->fetch(\PDO::FETCH_ASSOC);
-        $stmtAvis = Cnx::getInstance()->query('SELECT * FROM avis LEFT JOIN membre USING(id_membre) WHERE id_salle =' . (int)$produit['id_salle']);
+        $stmtAvis = Cnx::getInstance()->query('SELECT *, m.date_enregistrement as date_enregistrement_membre FROM avis LEFT JOIN membre m USING(id_membre) WHERE id_salle =' . (int)$produit['id_salle']);
         $liste_avis = $stmtAvis->fetchAll(\PDO::FETCH_ASSOC);
         return self::createProduit($produit, $liste_avis);
     }

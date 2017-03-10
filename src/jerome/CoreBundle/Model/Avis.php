@@ -166,7 +166,7 @@ class Avis
      */
     public static function fetchAll()
     {
-        $query = 'SELECT * FROM avis a JOIN membre m USING(id_membre) JOIN salle USING(id_salle)';
+        $query = 'SELECT *, m.date_enregistrement as date_enregistrement_membre FROM avis a JOIN membre m USING(id_membre) JOIN salle USING(id_salle)';
         $stmtAvis = Cnx::getInstance()->query($query);
         $liste_avis = self::createAvis($stmtAvis->fetchAll(\PDO::FETCH_ASSOC));
 
@@ -206,13 +206,14 @@ class Avis
         $avis_objet = [];
         foreach ($liste_avis as $avis) {
             $membre_informations = array(
-                'id_membre' => $avis['id_membre'],
-                'pseudo'    => $avis['pseudo'],
-                'nom'       => $avis['nom'],
-                'prenom'    => $avis['prenom'],
-                'email'     => $avis['email'],
-                'civilite'  => $avis['civilite'],
-                'statut'    => $avis['statut'],
+                'id_membre'             => $avis['id_membre'],
+                'pseudo'                => $avis['pseudo'],
+                'nom'                   => $avis['nom'],
+                'prenom'                => $avis['prenom'],
+                'email'                 => $avis['email'],
+                'civilite'              => $avis['civilite'],
+                'statut'                => $avis['statut'],
+                'date_enregistrement'   => (isset($avis['date_enregistrement_membre']) ? $avis['date_enregistrement_membre'] : null)
             );
             $avis_objet[] = new Avis(array(
                 'id_avis'               => $avis['id_avis'],

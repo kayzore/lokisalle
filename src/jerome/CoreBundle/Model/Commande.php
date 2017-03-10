@@ -116,18 +116,19 @@ class Commande
      */
     public static function fetchAll()
     {
-        $query = 'SELECT * FROM commande c JOIN membre m USING(id_membre) JOIN produit p USING(id_produit) JOIN avis USING(id_salle)';
+        $query = 'SELECT *, m.date_enregistrement as date_enregistrement_membre FROM commande c JOIN membre m USING(id_membre) JOIN produit p USING(id_produit) JOIN avis USING(id_salle)';
         $stmtCommande = Cnx::getInstance()->query($query);
         $liste_commandes = [];
         foreach ($stmtCommande->fetchAll(\PDO::FETCH_ASSOC) as $commande) {
             $membre_informations = array(
-                'id_membre' => $commande['id_membre'],
-                'pseudo'    => $commande['pseudo'],
-                'nom'       => $commande['nom'],
-                'prenom'    => $commande['prenom'],
-                'email'     => $commande['email'],
-                'civilite'  => $commande['civilite'],
-                'statut'    => $commande['statut'],
+                'id_membre'             => $commande['id_membre'],
+                'pseudo'                => $commande['pseudo'],
+                'nom'                   => $commande['nom'],
+                'prenom'                => $commande['prenom'],
+                'email'                 => $commande['email'],
+                'civilite'              => $commande['civilite'],
+                'statut'                => $commande['statut'],
+                'date_enregistrement'   => $commande['date_enregistrement_membre']
             );
             $produit_informations = array(
                 'id_produit'    => $commande['id_produit'],
