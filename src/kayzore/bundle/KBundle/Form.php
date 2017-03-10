@@ -8,7 +8,7 @@ class Form
     {
         self::sanitizeArray($_POST);
     }
-    
+
     private function sanitizeValue(&$value)
     {
         $value = trim(strip_tags($value));
