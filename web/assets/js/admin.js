@@ -3,9 +3,9 @@ jQuery(document).ready(function () {
         resultGet;
 
     function post(route, data, dataType, params) {
-        jsRouting.generate(route, params);
+        console.log(jsRouting.getUrl('admin', route, params))
         $.ajax({
-            url: '../' + jsRouting.getUrl(),
+            url: jsRouting.getUrl('admin', route, params),
             type: "POST",
             data: data,
             dataType: dataType,
@@ -24,9 +24,8 @@ jQuery(document).ready(function () {
     }
 
     function get(route, data, dataType, params) {
-        jsRouting.generate(route, params);
         $.ajax({
-            url: '../' + jsRouting.getUrl(),
+            url: jsRouting.getUrl('admin', route, params),
             type: "GET",
             data: data,
             dataType: dataType,
@@ -203,7 +202,7 @@ jQuery(document).ready(function () {
         form.removeErrors('#salleForm .help-block');
         form.disableForm(formElement, loader);
         if (formModalSalle.dataset.type == 'update') {
-            post('admin.sallesUpdatePost', formData, 'json', 'key:5s3df4.idSalle:' + formModalSalle.dataset.id);
+            post('admin.ls_salles_update', formData, 'json', {idSalle: formModalSalle.dataset.id});
              if (resultPost[0] === 'success') {
                  notification.show(
                      'Success !', 'Modification réussie !', 'success',
@@ -211,7 +210,7 @@ jQuery(document).ready(function () {
                  );
              }
         } else {
-            post('admin.sallesPost', formData, 'json', 'key:5s3df4');
+            post('admin.ls_salles_add', formData, 'json', {});
             if (resultPost[0] === 'success') {
                 notification.show(
                     'Success !', 'Ajout réussie !', 'success',
@@ -219,6 +218,7 @@ jQuery(document).ready(function () {
                 );
             }
         }
+        console.log(resultPost);
 
         if (resultPost[0] === 'success') {
             actualiseTabSalle(resultPost[1]);

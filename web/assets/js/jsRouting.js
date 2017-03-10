@@ -4,10 +4,10 @@ var jsRouting = function () {
         getUrl,
         replaceParams;
 
-    $.get('web/assets/routing/routing-admin.yml').done(function (data) {
+    $.get('../web/assets/routing/routing-admin.yml').done(function (data) {
         liste_routes_admin = jsyaml.load(data);
     });
-    $.get('web/assets/routing/routing.yml').done(function (data) {
+    $.get('../web/assets/routing/routing.yml').done(function (data) {
         liste_routes_public = jsyaml.load(data);
     });
 
@@ -16,9 +16,9 @@ var jsRouting = function () {
      */
     getUrl = function (type, route, params) {
          if (type === 'admin') {
-             return replaceParams(liste_routes_admin[route].route, params);
+             return liste_routes_admin[0] + replaceParams(liste_routes_admin[route].route, params);
          } else if (type === 'public') {
-             return replaceParams(liste_routes_public[route].route, params);
+             return liste_routes_public[0] + replaceParams(liste_routes_public[route].route, params);
          }
      };
 
