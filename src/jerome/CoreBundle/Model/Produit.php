@@ -232,13 +232,18 @@ class Produit
         if (!is_null($liste_avis) && count($liste_avis) > 0) {
             $avis_objet = Avis::createAvis($liste_avis);
         }
+        if (isset($produit['salle']) && is_object($produit['salle'])) {
+            $id_salle = $produit['salle']->getIdSalle();
+        } else {
+            $id_salle = $produit['id_salle'];
+        }
         $produit = new self(array(
             'id_produit'    => $produit['id_produit'],
             'date_arrivee'  => $produit['date_arrivee'],
             'date_depart'   => $produit['date_depart'],
             'prix'          => $produit['prix'],
             'etat'          => $produit['etat'],
-            'salle'         => Salle::createSalle(Salle::fetch($produit['salle']->getIdSalle()), $avis_objet),
+            'salle'         => Salle::createSalle(Salle::fetch($id_salle), $avis_objet),
         ));
         return $produit;
     }

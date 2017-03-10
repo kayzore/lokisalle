@@ -150,21 +150,15 @@ class Commande
 
     /**
      * Recupère la commande correspondant a un id_commande ou un id_produit
-     * @param null|int $id_salle
-     * @param null|int $id_produit
+     * @param null|int $id_commande
      * @return array
      */
-    public static function fetch($id_commande = null, $id_produit = null)
+    public static function fetch($id_commande = null)
     {
         $query = 'SELECT * FROM commande LEFT JOIN membre USING(id_membre)';
-        if (!is_null($id_salle)) {
-            $query .= 'WHERE id_salle =' . (int)$id_avis;
-        } elseif (!is_null($id_membre)) {
-            $query .= 'WHERE id_salle =' . (int)$id_membre;
-        } elseif (!is_null($id_salle)) {
-            $query .= 'WHERE id_salle =' . (int)$id_salle;
+        if (!is_null($id_commande)) {
+            $query .= 'WHERE id_commande =' . (int)$id_commande;
         }
-
 
         return Cnx::getInstance()->query($query)->fetch(\PDO::FETCH_ASSOC);
     }
