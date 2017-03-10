@@ -9,32 +9,28 @@
 
 {% block css %}
     {{ parent() }}
-    <link href="{{ assets('web/assets/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
-    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/lightbox.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/animate.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
-    <script src="{{ assets('web/assets/js/moment.js') }}"></script>
-    <script src="{{ assets('web/assets/js/moment-with-locales.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-datetimepicker.fr.js') }}"></script>
-    <script src="{{ assets('web/assets/js/app-datetimepicker.js') }}"></script>
-    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
-    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
-    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+    <script src="{{ assets('assets/js/lightbox.min.js') }}"></script>
+    <script src="{{ assets('assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('assets/js/admin.js') }}"></script>
+    <script src="{{ assets('assets/js/app.js') }}"></script>
 {% endblock %}
 
 {% block bodyContent %}
     <div id="page-wrapper">
         <div class="container-fluid">
             {{ back.headPage('Gestion des produits', [
-                '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
-                '<i class="fa fa-inbox"></i> <a href="../' ~ getRoute('admin.gestionSalles') ~ '">Gestion des salles</a>',
+                '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.ls_homepage') ~ '">Dashboard</a>',
+                '<i class="fa fa-inbox"></i> <a href="../' ~ getRoute('admin.ls_salles') ~ '">Gestion des salles</a>',
                 '<i class="fa fa-object-group"></i> Gestion des produits'
             ]) }}
 
@@ -65,12 +61,27 @@
                                     </tr>
                                     </thead>
                                     <tbody id="tbodyProduit">
-                                    {% for produit in listProduits %}
-                                        {{ back.rowProduits(
-                                        produit.id_produit, produit.date_arrivee, produit.date_depart, produit.id_salle,
-                                        produit.titre, '../web/uploads/' ~ produit.photo, 'Salle de ' ~ produit.categorie,
-                                        produit.prix, produit.etat
-                                        ) }}
+                                    {% for produit in liste_produits %}
+                                        <tr>
+                                            <td style="vertical-align:middle" class="text-center">{{ produit.getIdProduit }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ produit.getDateArrivee|date('d/m/Y H:i:s') }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ produit.getDateDepart|date('d/m/Y H:i:s') }}</td>
+                                            <td style="vertical-align:middle" class="text-center" data-id="{{ produit.getSalle.getIdSalle }}">
+                                                {{ produit.getSalle.getIdSalle }} - {{ produit.getSalle.getTitre }}<br>
+                                                <a href="{{ assets('uploads/' ~ produit.getSalle.getPhoto) }}" data-lightbox="salle-{{ produit.getSalle.getIdSalle }}" data-title="{{ produit.getSalle.getTitre }}">
+                                                    <img src="{{ assets('uploads/' ~ produit.getSalle.getPhoto) }}" class="img-responsive center-block imgSalleAdmin" alt="{{ 'Salle de ' ~ produit.getSalle.getCategorie }}">
+                                                </a>
+                                            </td>
+                                            <td style="vertical-align:middle" class="text-center">{{ produit.getSalle.getPrix }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ produit.getEtat }}</td>
+                                            <td style="vertical-align:middle" class="text-center">
+                                                <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                                                    <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                                    <a href="#" class="btnUpdateProduit btn btn-primary" data-id="{{ produit.getIdProduit }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                    <a href="#" class="btnDeleteProduit btn btn-danger" data-id="{{ produit.getIdProduit }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
@@ -91,7 +102,7 @@
                     <h4 class="modal-title text-center" id="produitModalLabel"></h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" id="produitForm" action="../{{ getRoute('admin.produitsPost') }}"  data-type="" data-id="">
+                    <form class="form-horizontal" method="post" id="produitForm" action="#"  data-type="" data-id="">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
