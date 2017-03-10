@@ -16,16 +16,14 @@ var jsRouting = function () {
      */
     getUrl = function (type, route, params) {
          if (type === 'admin') {
-             console.log(replaceParams(liste_routes_admin[route].route, params));
+             return replaceParams(liste_routes_admin[route].route, params);
          } else if (type === 'public') {
-             console.log(replaceParams(liste_routes_public[route].route, params));
+             return replaceParams(liste_routes_public[route].route, params);
          }
      };
 
     replaceParams = function (path, params) {
         $.each(params, function (k, param) {
-            console.log(":" + k);
-            console.log(param);
             path = path.replace(":" + k, param);
         });
         return path;
