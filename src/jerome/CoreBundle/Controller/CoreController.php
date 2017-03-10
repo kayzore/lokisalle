@@ -141,10 +141,16 @@ class CoreController extends Controller
         ));
     }
 
+    public function adminProduitsAction()
+    {
+        echo $this->twig->render('back/produits.html.twig', array(
+            'liste_produits' => Produit::fetchAll()
+        ));
+    }
+    
     public function adminMembresAction()
     {
         echo $this->twig->render('back/membres.html.twig', array(
             'liste_membres' => Membre::fetchAll()
-        ));
     }
 }
