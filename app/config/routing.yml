@@ -51,3 +51,9 @@ admin.ls_salle:
     type: get
     controller: 'CoreController'
     methode: 'adminSalles'
+
+admin.ls_membres:
+    route: '/administration/liste-des-membres/'
+    type: get
+    controller: 'CoreController'
+    methode: 'adminMembres'

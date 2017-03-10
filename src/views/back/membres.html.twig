@@ -9,27 +9,25 @@
 
 {% block css %}
     {{ parent() }}
-    <link href="{{ assets('web/assets/css/dataTables.min.css') }}" rel="stylesheet" />
-    <link href="{{ assets('web/assets/css/animate.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ assets('assets/css/animate.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
-    <script src="{{ assets('web/assets/js/moment.js') }}"></script>
-    <script src="{{ assets('web/assets/js/moment-with-locales.js') }}"></script>
-    <script src="{{ assets('web/assets/js/dataTables.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ assets('web/assets/js/notifications.js') }}"></script>
-    <script src="{{ assets('web/assets/js/admin.js') }}"></script>
-    <script src="{{ assets('web/assets/js/app.js') }}"></script>
+    <script src="{{ assets('assets/js/dataTables.min.js') }}"></script>
+    <script src="{{ assets('assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ assets('assets/js/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ assets('assets/js/notifications.js') }}"></script>
+    <script src="{{ assets('assets/js/admin.js') }}"></script>
+    <script src="{{ assets('assets/js/app.js') }}"></script>
 {% endblock %}
 
 {% block bodyContent %}
     <div id="page-wrapper">
         <div class="container-fluid">
             {{ back.headPage('Gestion des membres', [
-            '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.home') ~ '">Dashboard</a>',
+            '<i class="fa fa-dashboard"></i> <a href="../' ~ getRoute('admin.ls_homepage') ~ '">Dashboard</a>',
             '<i class="fa fa-users"></i> Gestion des membres'
             ]) }}
 
@@ -63,8 +61,36 @@
                                     </tr>
                                     </thead>
                                     <tbody id="tbodyMembres">
-                                    {% for membre in listeMembres %}
-                                        {{ back.rowMembres(membre.id_membre, membre.pseudo, membre.nom, membre.prenom, membre.email, membre.civilite, membre.statut, membre.date_enregistrement) }}
+                                    {% for membre in liste_membres %}
+                                        <tr>
+                                            <td style="vertical-align:middle" class="text-center">{{ membre.getId }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ membre.getPseudo }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ membre.getNom }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ membre.getPrenom }}</td>
+                                            <td style="vertical-align:middle" class="text-center">{{ membre.getEmail }}</td>
+                                            <td style="vertical-align:middle" class="text-center">
+                                                {% if membre.getCivilite == 'm' %}
+                                                    Homme
+                                                {% elseif membre.getCivilite == 'f' %}
+                                                    Femme
+                                                {% endif %}
+                                            </td>
+                                            <td style="vertical-align:middle" class="text-center">
+                                                {% if membre.getStatut == '0' %}
+                                                    Membre
+                                                {% elseif membre.getStatut == '1' %}
+                                                    Admin
+                                                {% endif %}
+                                            </td>
+                                            <td style="vertical-align:middle" class="text-center">{{ membre.getDateEnregistrement|date('d/m/Y H:i') }}</td>
+                                            <td style="vertical-align:middle" class="text-center">
+                                                <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                                                    <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                                    <a href="#" class="btnUpdateMembre btn btn-primary" data-id="{{ membre.getId }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                    <a href="#" class="btnDeleteMembre btn btn-danger" data-id="{{ membre.getId }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
@@ -85,7 +111,7 @@
                     <h4 class="modal-title text-center" id="membreModalLabel"></h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" id="membreForm" action="../{{ getRoute('admin.membresPost') }}">
+                    <form class="form-horizontal" method="post" id="membreForm" action="#">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

@@ -140,4 +140,11 @@ class CoreController extends Controller
             'liste_salles' => Salle::fetchAll()
         ));
     }
+
+    public function adminMembresAction()
+    {
+        echo $this->twig->render('back/membres.html.twig', array(
+            'liste_membres' => Membre::fetchAll()
+        ));
+    }
 }

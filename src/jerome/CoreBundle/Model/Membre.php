@@ -43,6 +43,11 @@ class Membre implements MembreInterface
     private $statut;
 
     /**
+     * @var \DateTime
+     */
+    private $date_enregistrement;
+
+    /**
      * Membre constructor.
      * @param array|null $membre
      */
@@ -55,6 +60,9 @@ class Membre implements MembreInterface
         $this->setEmail($membre['email']);
         $this->setCivilite($membre['civilite']);
         $this->setStatut($membre['statut']);
+        if (isset($membre['date_enregistrement'])) {
+            $this->setDateEnregistrement($membre['date_enregistrement']);
+        }
     }
 
     /**
@@ -210,6 +218,25 @@ class Membre implements MembreInterface
     public function setStatut($statut)
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEnregistrement()
+    {
+        return $this->date_enregistrement;
+    }
+
+    /**
+     * @param \DateTime $date_enregistrement
+     * @return $this
+     */
+    public function setDateEnregistrement($date_enregistrement)
+    {
+        $this->date_enregistrement = $date_enregistrement;
 
         return $this;
     }
@@ -463,13 +490,14 @@ class Membre implements MembreInterface
     public static function createMembre($membre)
     {
         $membre = new self(array(
-            'id'        => $membre['id_membre'],
-            'pseudo'    => $membre['pseudo'],
-            'nom'       => $membre['nom'],
-            'prenom'    => $membre['prenom'],
-            'email'     => $membre['email'],
-            'civilite'  => $membre['civilite'],
-            'statut'    => $membre['statut']
+            'id'                    => $membre['id_membre'],
+            'pseudo'                => $membre['pseudo'],
+            'nom'                   => $membre['nom'],
+            'prenom'                => $membre['prenom'],
+            'email'                 => $membre['email'],
+            'civilite'              => $membre['civilite'],
+            'statut'                => $membre['statut'],
+            'date_enregistrement'   => $membre['date_enregistrement']
         ));
         return $membre;
     }
