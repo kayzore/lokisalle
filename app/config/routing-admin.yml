@@ -5,10 +5,22 @@ admin.ls_homepage:
     methode: 'adminHome'
 
 admin.ls_salles:
-    route: '/administration/liste-des-salles/'
+    route: '/administration/salles/'
     type: get
     controller: 'CoreController'
     methode: 'adminSalles'
+
+admin.ls_salles_add:
+    route: '/administration/salles/ajouter/'
+    type: post
+    controller: 'CoreController'
+    methode: 'adminSallesAdd'
+
+admin.ls_salles_update:
+    route: '/administration/salles/modifier/'
+    type: post
+    controller: 'CoreController'
+    methode: 'adminSallesUpdate'
 
 admin.ls_produits:
     route: '/administration/liste-des-produits/'
