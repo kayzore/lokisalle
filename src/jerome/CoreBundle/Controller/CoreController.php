@@ -140,4 +140,11 @@ class CoreController extends Controller
             'liste_salles' => Salle::fetchAll()
         ));
     }
+
+    public function adminProduitsAction()
+    {
+        echo $this->twig->render('back/produits.html.twig', array(
+            'liste_produits' => Produit::fetchAll()
+        ));
+    }
 }
