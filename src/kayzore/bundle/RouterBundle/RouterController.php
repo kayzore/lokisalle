@@ -2,6 +2,7 @@
 namespace kayzore\bundle\RouterBundle;
 
 use app\AppKernel;
+use kayzore\bundle\KBundle\KFramework;
 use Symfony\Component\Yaml\Yaml;
 
 class RouterController
@@ -12,7 +13,8 @@ class RouterController
     /**
      * Start routes, controller and PDO
      */
-    public function __construct() {
+    public function __construct()
+    {
         $appKernel = new AppKernel();
         $registerController = $appKernel->registerController();
         foreach ($registerController as $name => $controller) {
@@ -26,7 +28,8 @@ class RouterController
     /**
      * Lance le système de route
      */
-    private function start() {
+    private function start()
+    {
         $this->router->run();
     }
 
@@ -44,8 +47,10 @@ class RouterController
      * });
      *
      */
-    private function routes() {
-        $routing = Yaml::parse(file_get_contents(\kayzore\bundle\KBundle\kFramework::getPathConfig() . 'routing.yml'));
+    private function routes()
+    {
+        $path_admin = kFramework::getPathConfig() . 'routing-admin.yml';
+        $routing = Yaml::parse(file_get_contents($path_admin));
         foreach ($routing as $alias => $value) {
             $methode = $value['methode'] . 'Action';
             $this
@@ -56,6 +61,30 @@ class RouterController
                     $alias
                 )
             ;
+        }
+        $routing[] = $_SESSION[kFramework::getProjectAlias() . '_viewVar']['racineWeb'];
+        $yaml = Yaml::dump($routing);
+        if (!file_put_contents('assets/routing/routing-admin.yml', $yaml)) {
+            new ServiceException(500, "La copie $path_admin du fichier a échouée...");
+        }
+
+        $path_public = kFramework::getPathConfig() . 'routing.yml';
+        $routing = Yaml::parse(file_get_contents($path_public));
+        foreach ($routing as $alias => $value) {
+            $methode = $value['methode'] . 'Action';
+            $this
+                ->router
+                ->$value['type'](
+                    $value['route'],
+                    $value['controller'] . '#' . $methode,
+                    $alias
+                )
+            ;
+        }
+        $routing[] = $_SESSION[kFramework::getProjectAlias() . '_viewVar']['racineWeb'];
+        $yaml = Yaml::dump($routing);
+        if (!file_put_contents('assets/routing/routing.yml', $yaml)) {
+            new ServiceException(500, "La copie $path_public du fichier a échouée...");
         }
     }
 }
