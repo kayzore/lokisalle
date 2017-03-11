@@ -135,6 +135,9 @@ class SalleValidator
         if (empty($cp)) {
             $msg = 'Le code postal est obligatoire.';
             return false;
+        } else if (strlen($cp) != 5 || !ctype_digit($cp)) {
+            $msg = "Le code postal doit être de 5 chiffres.";
+            return false;
         }
 
         return true;
@@ -142,13 +145,12 @@ class SalleValidator
 
     /**
      * Effectue les validations de la capacite
-     * @param $capacite
+     * @param int $capacite
      * @param $msg
      * @return bool
      */
     private static function validateCapacite($capacite, &$msg)
     {
-        var_dump($capacite);
         if (empty($capacite)) {
             $msg = 'La capacite est obligatoire.';
             return false;
@@ -183,16 +185,16 @@ class SalleValidator
     {
         if (!empty($photo['tmp_name'])) {
             if ($photo['size'] > 1000000) {
-                $msg = 'La photo ne doit pas faire plus de 1Mo';
+                $msg = ['La photo ne doit pas faire plus de 1Mo'];
                 return false;
             }
             $allowedMimeTypes = ['image/jpeg', 'image/gif', 'image/png'];
             if (!in_array($photo['type'], $allowedMimeTypes)) {
-                $msg = 'La photo doit être un JPG, un GIF ou un PNG';
+                $msg = ['La photo doit être un JPG, un GIF ou un PNG'];
                 return false;
             }
             if ($photo['size'] != 0 && $photo['error'] != 0) {
-                $msg = ['Vous devez choisir une image'];
+                $msg = ['Vous devez choisir une image.'];
                 return false;
             }
         } else {

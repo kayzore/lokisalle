@@ -175,6 +175,9 @@ class Salle
      */
     public function setPays($pays)
     {
+        if ($pays != 'France') {
+            $pays = 'France';
+        }
         $this->pays = $pays;
 
         return $this;
@@ -194,6 +197,22 @@ class Salle
      */
     public function setVille($ville)
     {
+        if ($ville != 'Paris' || $ville != 'Lyon' || $ville != 'Marseille') {
+            switch ($ville) {
+                case 0:
+                    $ville = 'Paris';
+                    break;
+                case 1:
+                    $ville = 'Lyon';
+                    break;
+                case 2:
+                    $ville = 'Marseille';
+                    break;
+                default:
+                    $ville = 'Paris';
+                    break;
+            }
+        }
         $this->ville = $ville;
 
         return $this;
@@ -265,11 +284,27 @@ class Salle
     }
 
     /**
-     * @param string $categorie
+     * @param string|int $categorie
      * @return $this
      */
     public function setCategorie($categorie)
     {
+        if ($categorie != 'Réunion' || $categorie != 'Bureau' || $categorie != 'Formation') {
+            switch ($categorie) {
+                case 0:
+                    $categorie = 'Réunion';
+                    break;
+                case 1:
+                    $categorie = 'Bureau';
+                    break;
+                case 2:
+                    $categorie = 'Formation';
+                    break;
+                default:
+                    $categorie = 'Réunion';
+                    break;
+            }
+        }
         $this->categorie = $categorie;
 
         return $this;
@@ -332,15 +367,15 @@ class Salle
             . 'VALUES(:titre, :description, :photo, :pays, :ville, :adresse, :cp, :capacite, :categorie)'
         ;
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':titre', $this->getTitre(), PDO::PARAM_STR);
-        $stmt->bindParam(':description', $this->getDescription(), PDO::PARAM_STR);
-        $stmt->bindParam(':photo', $this->getPhoto(), PDO::PARAM_STR);
-        $stmt->bindParam(':pays', $this->getPays(), PDO::PARAM_STR);
-        $stmt->bindParam(':ville', $this->getVille(), PDO::PARAM_STR);
-        $stmt->bindParam(':adresse', $this->getAdresse(), PDO::PARAM_STR);
-        $stmt->bindParam(':cp', $this->getCp(), PDO::PARAM_STR);
-        $stmt->bindParam(':capacite', $this->getCapacite(), PDO::PARAM_STR);
-        $stmt->bindParam(':categorie', $this->getCategorie(), PDO::PARAM_STR);
+        $stmt->bindValue(':titre', $this->getTitre(), PDO::PARAM_STR);
+        $stmt->bindValue(':description', $this->getDescription(), PDO::PARAM_STR);
+        $stmt->bindValue(':photo', $this->getPhoto(), PDO::PARAM_STR);
+        $stmt->bindValue(':pays', $this->getPays(), PDO::PARAM_STR);
+        $stmt->bindValue(':ville', $this->getVille(), PDO::PARAM_STR);
+        $stmt->bindValue(':adresse', $this->getAdresse(), PDO::PARAM_STR);
+        $stmt->bindValue(':cp', $this->getCp(), PDO::PARAM_STR);
+        $stmt->bindValue(':capacite', $this->getCapacite(), PDO::PARAM_STR);
+        $stmt->bindValue(':categorie', $this->getCategorie(), PDO::PARAM_STR);
         $stmt->execute();
         $this->setIdSalle($pdo->lastInsertId());
     }
@@ -385,25 +420,30 @@ class Salle
      * Récupère et retourne la liste de toute les salles au format objet
      * @return array
      */
-    public static function fetchAll()
+    public static function fetchAll($array = false)
     {
         $stmt = Cnx::getInstance()->query('SELECT * FROM salle');
-        $salles = [];
 
-        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $salle) {
-            $salles[] = new self(array(
-                'id_salle'      => $salle['id_salle'],
-                'titre'         => $salle['titre'],
-                'description'   => $salle['description'],
-                'photo'         => $salle['photo'],
-                'pays'          => $salle['pays'],
-                'ville'         => $salle['ville'],
-                'adresse'       => $salle['adresse'],
-                'cp'            => $salle['cp'],
-                'capacite'      => $salle['capacite'],
-                'categorie'     => $salle['categorie']
-            ));
+        if ($array) {
+            $salles = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } else {
+            $salles = [];
+            foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $salle) {
+                $salles[] = new self(array(
+                    'id_salle'      => $salle['id_salle'],
+                    'titre'         => $salle['titre'],
+                    'description'   => $salle['description'],
+                    'photo'         => $salle['photo'],
+                    'pays'          => $salle['pays'],
+                    'ville'         => $salle['ville'],
+                    'adresse'       => $salle['adresse'],
+                    'cp'            => $salle['cp'],
+                    'capacite'      => $salle['capacite'],
+                    'categorie'     => $salle['categorie']
+                ));
+            }
         }
+
 
         return $salles;
     }

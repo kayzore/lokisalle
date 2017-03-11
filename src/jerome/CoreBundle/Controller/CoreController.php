@@ -154,7 +154,7 @@ class CoreController extends Controller
                     ->setVille($_POST['villeSelect'])
                     ->setAdresse($_POST['adresseTextarea'])
                     ->setCp($_POST['cpInput'])
-                    ->setCapacite($_POST['capaciteSelect'])
+                    ->setCapacite($_POST['capaciteSelect'] + 1)
                     ->setCategorie($_POST['categorieSelect'])
                 ;
 
@@ -162,12 +162,13 @@ class CoreController extends Controller
 
                 if (empty($errors)) {
                     $salle->save();
-                    FlashMessage::set("Ajout de la nouvelle salle effectuée.");
-                    $result[0] = 'success';
+                    $result = array(
+                        0 => 'success',
+                        1 => Salle::fetchAll(true)
+                    );
                 } else {
-                    FlashMessage::set('Le formulaire contient des erreurs');
+                    $result[1] = $errors;
                 }
-                $result[1] = $errors;
                 echo json_encode($result);
             }
         }

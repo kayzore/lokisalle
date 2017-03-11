@@ -3,7 +3,6 @@ jQuery(document).ready(function () {
         resultGet;
 
     function post(route, data, dataType, params) {
-        console.log(jsRouting.getUrl('admin', route, params))
         $.ajax({
             url: jsRouting.getUrl('admin', route, params),
             type: "POST",
@@ -218,7 +217,6 @@ jQuery(document).ready(function () {
                 );
             }
         }
-        console.log(resultPost);
 
         if (resultPost[0] === 'success') {
             actualiseTabSalle(resultPost[1]);
